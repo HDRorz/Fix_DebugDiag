@@ -1,0 +1,97 @@
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+
+namespace DebugDiag.DbgLib;
+
+[ComImport]
+[Guid("1C07BA58-6A4F-4E44-90F2-A62056F379B8")]
+[TypeLibType(TypeLibTypeFlags.FDual | TypeLibTypeFlags.FNonExtensible | TypeLibTypeFlags.FDispatchable)]
+public interface IManager
+{
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(1)]
+	void Write([In][MarshalAs(UnmanagedType.BStr)] string Output);
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(2)]
+	void WriteBlock([In] int BlockNum);
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(3)]
+	[return: MarshalAs(UnmanagedType.BStr)]
+	string ExecuteScript([In][MarshalAs(UnmanagedType.BStr)] string ScriptName, [In][MarshalAs(UnmanagedType.Struct)] object ScriptParam);
+
+	[DispId(4)]
+	IDataFiles DataFiles
+	{
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+		[DispId(4)]
+		[return: MarshalAs(UnmanagedType.Interface)]
+		get;
+	}
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(5)]
+	void ReportInformation([In][MarshalAs(UnmanagedType.BStr)] string Information, [In] int Weight = 0, [In][MarshalAs(UnmanagedType.BStr)] string SolutionSourceID = "");
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(6)]
+	void ReportWarning([In][MarshalAs(UnmanagedType.BStr)] string Warning, [In][MarshalAs(UnmanagedType.BStr)] string Recommendation, [In] int Weight = 0, [In][MarshalAs(UnmanagedType.BStr)] string SolutionSourceID = "");
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(7)]
+	void ReportError([In][MarshalAs(UnmanagedType.BStr)] string Error, [In][MarshalAs(UnmanagedType.BStr)] string Recommendation, [In] int Weight = 0, [In][MarshalAs(UnmanagedType.BStr)] string SolutionSourceID = "");
+
+	[DispId(8)]
+	IResults Results
+	{
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+		[DispId(8)]
+		[return: MarshalAs(UnmanagedType.Interface)]
+		get;
+	}
+
+	[DispId(9)]
+	IScripts Scripts
+	{
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+		[DispId(9)]
+		[return: MarshalAs(UnmanagedType.Interface)]
+		get;
+	}
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(10)]
+	[return: MarshalAs(UnmanagedType.IDispatch)]
+	object GetDebugger([In][MarshalAs(UnmanagedType.BStr)] string DumpFile);
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(11)]
+	void CloseDebugger([In][MarshalAs(UnmanagedType.BStr)] string DataFile);
+
+	[DispId(12)]
+	IProgress Progress
+	{
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+		[DispId(12)]
+		[return: MarshalAs(UnmanagedType.Interface)]
+		get;
+	}
+
+	[DispId(13)]
+	object ScriptParameter
+	{
+		[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+		[DispId(13)]
+		[return: MarshalAs(UnmanagedType.Struct)]
+		get;
+	}
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(14)]
+	void End([In][MarshalAs(UnmanagedType.BStr)] string ErrorSource, [In][MarshalAs(UnmanagedType.BStr)] string ErrorDescription);
+
+	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+	[DispId(15)]
+	void ReportOther([In][MarshalAs(UnmanagedType.BStr)] string Description, [In][MarshalAs(UnmanagedType.BStr)] string Recommendation, [In][MarshalAs(UnmanagedType.BStr)] string TypeLabel, [In][MarshalAs(UnmanagedType.BStr)] string IconFileName, [In] int Weight = 0, [In][MarshalAs(UnmanagedType.BStr)] string SolutionSourceID = "");
+}

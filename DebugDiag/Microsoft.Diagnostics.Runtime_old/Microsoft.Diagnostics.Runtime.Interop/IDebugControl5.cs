@@ -1,0 +1,524 @@
+using System;
+using System.Runtime.InteropServices;
+using System.Text;
+
+namespace Microsoft.Diagnostics.Runtime.Interop;
+
+[ComImport]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+[Guid("b2ffe162-2412-429f-8d1d-5bf6dd824696")]
+public interface IDebugControl5 : IDebugControl4, IDebugControl3, IDebugControl2, IDebugControl
+{
+	[PreserveSig]
+	new int GetInterrupt();
+
+	[PreserveSig]
+	new int SetInterrupt([In] DEBUG_INTERRUPT Flags);
+
+	[PreserveSig]
+	new int GetInterruptTimeout(out uint Seconds);
+
+	[PreserveSig]
+	new int SetInterruptTimeout([In] uint Seconds);
+
+	[PreserveSig]
+	new int GetLogFile([Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint FileSize, [MarshalAs(UnmanagedType.Bool)] out bool Append);
+
+	[PreserveSig]
+	new int OpenLogFile([In][MarshalAs(UnmanagedType.LPStr)] string File, [In][MarshalAs(UnmanagedType.Bool)] bool Append);
+
+	[PreserveSig]
+	new int CloseLogFile();
+
+	[PreserveSig]
+	new int GetLogMask(out DEBUG_OUTPUT Mask);
+
+	[PreserveSig]
+	new int SetLogMask([In] DEBUG_OUTPUT Mask);
+
+	[PreserveSig]
+	new int Input([Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint InputSize);
+
+	[PreserveSig]
+	new int ReturnInput([In][MarshalAs(UnmanagedType.LPStr)] string Buffer);
+
+	[PreserveSig]
+	new int Output([In] DEBUG_OUTPUT Mask, [In][MarshalAs(UnmanagedType.LPStr)] string Format);
+
+	[PreserveSig]
+	new int OutputVaList([In] DEBUG_OUTPUT Mask, [In][MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr va_list_Args);
+
+	[PreserveSig]
+	new int ControlledOutput([In] DEBUG_OUTCTL OutputControl, [In] DEBUG_OUTPUT Mask, [In][MarshalAs(UnmanagedType.LPStr)] string Format);
+
+	[PreserveSig]
+	new int ControlledOutputVaList([In] DEBUG_OUTCTL OutputControl, [In] DEBUG_OUTPUT Mask, [In][MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr va_list_Args);
+
+	[PreserveSig]
+	new int OutputPrompt([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPStr)] string Format);
+
+	[PreserveSig]
+	new int OutputPromptVaList([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPStr)] string Format, [In] IntPtr va_list_Args);
+
+	[PreserveSig]
+	new int GetPromptText([Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint TextSize);
+
+	[PreserveSig]
+	new int OutputCurrentState([In] DEBUG_OUTCTL OutputControl, [In] DEBUG_CURRENT Flags);
+
+	[PreserveSig]
+	new int OutputVersionInformation([In] DEBUG_OUTCTL OutputControl);
+
+	[PreserveSig]
+	new int GetNotifyEventHandle(out ulong Handle);
+
+	[PreserveSig]
+	new int SetNotifyEventHandle([In] ulong Handle);
+
+	[PreserveSig]
+	new int Assemble([In] ulong Offset, [In][MarshalAs(UnmanagedType.LPStr)] string Instr, out ulong EndOffset);
+
+	[PreserveSig]
+	new int Disassemble([In] ulong Offset, [In] DEBUG_DISASM Flags, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint DisassemblySize, out ulong EndOffset);
+
+	[PreserveSig]
+	new int GetDisassembleEffectiveOffset(out ulong Offset);
+
+	[PreserveSig]
+	new int OutputDisassembly([In] DEBUG_OUTCTL OutputControl, [In] ulong Offset, [In] DEBUG_DISASM Flags, out ulong EndOffset);
+
+	[PreserveSig]
+	new int OutputDisassemblyLines([In] DEBUG_OUTCTL OutputControl, [In] uint PreviousLines, [In] uint TotalLines, [In] ulong Offset, [In] DEBUG_DISASM Flags, out uint OffsetLine, out ulong StartOffset, out ulong EndOffset, [Out][MarshalAs(UnmanagedType.LPArray)] ulong[] LineOffsets);
+
+	[PreserveSig]
+	new int GetNearInstruction([In] ulong Offset, [In] int Delta, out ulong NearOffset);
+
+	[PreserveSig]
+	new int GetStackTrace([In] ulong FrameOffset, [In] ulong StackOffset, [In] ulong InstructionOffset, [Out][MarshalAs(UnmanagedType.LPArray)] DEBUG_STACK_FRAME[] Frames, [In] int FrameSize, out uint FramesFilled);
+
+	[PreserveSig]
+	new int GetReturnOffset(out ulong Offset);
+
+	[PreserveSig]
+	new int OutputStackTrace([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPArray)] DEBUG_STACK_FRAME[] Frames, [In] int FramesSize, [In] DEBUG_STACK Flags);
+
+	[PreserveSig]
+	new int GetDebuggeeType(out DEBUG_CLASS Class, out DEBUG_CLASS_QUALIFIER Qualifier);
+
+	[PreserveSig]
+	new int GetActualProcessorType(out IMAGE_FILE_MACHINE Type);
+
+	[PreserveSig]
+	new int GetExecutingProcessorType(out IMAGE_FILE_MACHINE Type);
+
+	[PreserveSig]
+	new int GetNumberPossibleExecutingProcessorTypes(out uint Number);
+
+	[PreserveSig]
+	new int GetPossibleExecutingProcessorTypes([In] uint Start, [In] uint Count, [Out][MarshalAs(UnmanagedType.LPArray)] IMAGE_FILE_MACHINE[] Types);
+
+	[PreserveSig]
+	new int GetNumberProcessors(out uint Number);
+
+	[PreserveSig]
+	new int GetSystemVersion(out uint PlatformId, out uint Major, out uint Minor, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder ServicePackString, [In] int ServicePackStringSize, out uint ServicePackStringUsed, out uint ServicePackNumber, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder BuildString, [In] int BuildStringSize, out uint BuildStringUsed);
+
+	[PreserveSig]
+	new int GetPageSize(out uint Size);
+
+	[PreserveSig]
+	new int IsPointer64Bit();
+
+	[PreserveSig]
+	new int ReadBugCheckData(out uint Code, out ulong Arg1, out ulong Arg2, out ulong Arg3, out ulong Arg4);
+
+	[PreserveSig]
+	new int GetNumberSupportedProcessorTypes(out uint Number);
+
+	[PreserveSig]
+	new int GetSupportedProcessorTypes([In] uint Start, [In] uint Count, [Out][MarshalAs(UnmanagedType.LPArray)] IMAGE_FILE_MACHINE[] Types);
+
+	[PreserveSig]
+	new int GetProcessorTypeNames([In] IMAGE_FILE_MACHINE Type, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder FullNameBuffer, [In] int FullNameBufferSize, out uint FullNameSize, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder AbbrevNameBuffer, [In] int AbbrevNameBufferSize, out uint AbbrevNameSize);
+
+	[PreserveSig]
+	new int GetEffectiveProcessorType(out IMAGE_FILE_MACHINE Type);
+
+	[PreserveSig]
+	new int SetEffectiveProcessorType([In] IMAGE_FILE_MACHINE Type);
+
+	[PreserveSig]
+	new int GetExecutionStatus(out DEBUG_STATUS Status);
+
+	[PreserveSig]
+	new int SetExecutionStatus([In] DEBUG_STATUS Status);
+
+	[PreserveSig]
+	new int GetCodeLevel(out DEBUG_LEVEL Level);
+
+	[PreserveSig]
+	new int SetCodeLevel([In] DEBUG_LEVEL Level);
+
+	[PreserveSig]
+	new int GetEngineOptions(out DEBUG_ENGOPT Options);
+
+	[PreserveSig]
+	new int AddEngineOptions([In] DEBUG_ENGOPT Options);
+
+	[PreserveSig]
+	new int RemoveEngineOptions([In] DEBUG_ENGOPT Options);
+
+	[PreserveSig]
+	new int SetEngineOptions([In] DEBUG_ENGOPT Options);
+
+	[PreserveSig]
+	new int GetSystemErrorControl(out ERROR_LEVEL OutputLevel, out ERROR_LEVEL BreakLevel);
+
+	[PreserveSig]
+	new int SetSystemErrorControl([In] ERROR_LEVEL OutputLevel, [In] ERROR_LEVEL BreakLevel);
+
+	[PreserveSig]
+	new int GetTextMacro([In] uint Slot, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint MacroSize);
+
+	[PreserveSig]
+	new int SetTextMacro([In] uint Slot, [In][MarshalAs(UnmanagedType.LPStr)] string Macro);
+
+	[PreserveSig]
+	new int GetRadix(out uint Radix);
+
+	[PreserveSig]
+	new int SetRadix([In] uint Radix);
+
+	[PreserveSig]
+	new int Evaluate([In][MarshalAs(UnmanagedType.LPStr)] string Expression, [In] DEBUG_VALUE_TYPE DesiredType, out DEBUG_VALUE Value, out uint RemainderIndex);
+
+	[PreserveSig]
+	new int CoerceValue([In] DEBUG_VALUE In, [In] DEBUG_VALUE_TYPE OutType, out DEBUG_VALUE Out);
+
+	[PreserveSig]
+	new int CoerceValues([In] uint Count, [In][MarshalAs(UnmanagedType.LPArray)] DEBUG_VALUE[] In, [In][MarshalAs(UnmanagedType.LPArray)] DEBUG_VALUE_TYPE[] OutType, [Out][MarshalAs(UnmanagedType.LPArray)] DEBUG_VALUE[] Out);
+
+	[PreserveSig]
+	new int Execute([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPStr)] string Command, [In] DEBUG_EXECUTE Flags);
+
+	[PreserveSig]
+	new int ExecuteCommandFile([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPStr)] string CommandFile, [In] DEBUG_EXECUTE Flags);
+
+	[PreserveSig]
+	new int GetNumberBreakpoints(out uint Number);
+
+	[PreserveSig]
+	new int GetBreakpointByIndex([In] uint Index, [MarshalAs(UnmanagedType.Interface)] out IDebugBreakpoint bp);
+
+	[PreserveSig]
+	new int GetBreakpointById([In] uint Id, [MarshalAs(UnmanagedType.Interface)] out IDebugBreakpoint bp);
+
+	[PreserveSig]
+	new int GetBreakpointParameters([In] uint Count, [In][MarshalAs(UnmanagedType.LPArray)] uint[] Ids, [In] uint Start, [Out][MarshalAs(UnmanagedType.LPArray)] DEBUG_BREAKPOINT_PARAMETERS[] Params);
+
+	[PreserveSig]
+	new int AddBreakpoint([In] DEBUG_BREAKPOINT_TYPE Type, [In] uint DesiredId, [MarshalAs(UnmanagedType.Interface)] out IDebugBreakpoint Bp);
+
+	[PreserveSig]
+	new int RemoveBreakpoint([In][MarshalAs(UnmanagedType.Interface)] IDebugBreakpoint Bp);
+
+	[PreserveSig]
+	new int AddExtension([In][MarshalAs(UnmanagedType.LPStr)] string Path, [In] uint Flags, out ulong Handle);
+
+	[PreserveSig]
+	new int RemoveExtension([In] ulong Handle);
+
+	[PreserveSig]
+	new int GetExtensionByPath([In][MarshalAs(UnmanagedType.LPStr)] string Path, out ulong Handle);
+
+	[PreserveSig]
+	new int CallExtension([In] ulong Handle, [In][MarshalAs(UnmanagedType.LPStr)] string Function, [In][MarshalAs(UnmanagedType.LPStr)] string Arguments);
+
+	[PreserveSig]
+	new int GetExtensionFunction([In] ulong Handle, [In][MarshalAs(UnmanagedType.LPStr)] string FuncName, out IntPtr Function);
+
+	[PreserveSig]
+	new int GetWindbgExtensionApis32([In][Out] ref WINDBG_EXTENSION_APIS32 Api);
+
+	[PreserveSig]
+	new int GetWindbgExtensionApis64([In][Out] ref WINDBG_EXTENSION_APIS64 Api);
+
+	[PreserveSig]
+	new int GetNumberEventFilters(out uint SpecificEvents, out uint SpecificExceptions, out uint ArbitraryExceptions);
+
+	[PreserveSig]
+	new int GetEventFilterText([In] uint Index, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint TextSize);
+
+	[PreserveSig]
+	new int GetEventFilterCommand([In] uint Index, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint CommandSize);
+
+	[PreserveSig]
+	new int SetEventFilterCommand([In] uint Index, [In][MarshalAs(UnmanagedType.LPStr)] string Command);
+
+	[PreserveSig]
+	new int GetSpecificFilterParameters([In] uint Start, [In] uint Count, [Out][MarshalAs(UnmanagedType.LPArray)] DEBUG_SPECIFIC_FILTER_PARAMETERS[] Params);
+
+	[PreserveSig]
+	new int SetSpecificFilterParameters([In] uint Start, [In] uint Count, [In][MarshalAs(UnmanagedType.LPArray)] DEBUG_SPECIFIC_FILTER_PARAMETERS[] Params);
+
+	[PreserveSig]
+	new int GetSpecificEventFilterArgument([In] uint Index, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint ArgumentSize);
+
+	[PreserveSig]
+	new int SetSpecificEventFilterArgument([In] uint Index, [In][MarshalAs(UnmanagedType.LPStr)] string Argument);
+
+	[PreserveSig]
+	new int GetExceptionFilterParameters([In] uint Count, [In][MarshalAs(UnmanagedType.LPArray)] uint[] Codes, [In] uint Start, [Out][MarshalAs(UnmanagedType.LPArray)] DEBUG_EXCEPTION_FILTER_PARAMETERS[] Params);
+
+	[PreserveSig]
+	new int SetExceptionFilterParameters([In] uint Count, [In][MarshalAs(UnmanagedType.LPArray)] DEBUG_EXCEPTION_FILTER_PARAMETERS[] Params);
+
+	[PreserveSig]
+	new int GetExceptionFilterSecondCommand([In] uint Index, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint CommandSize);
+
+	[PreserveSig]
+	new int SetExceptionFilterSecondCommand([In] uint Index, [In][MarshalAs(UnmanagedType.LPStr)] string Command);
+
+	[PreserveSig]
+	new int WaitForEvent([In] DEBUG_WAIT Flags, [In] uint Timeout);
+
+	[PreserveSig]
+	new int GetLastEventInformation(out DEBUG_EVENT Type, out uint ProcessId, out uint ThreadId, [In] IntPtr ExtraInformation, [In] uint ExtraInformationSize, out uint ExtraInformationUsed, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Description, [In] int DescriptionSize, out uint DescriptionUsed);
+
+	[PreserveSig]
+	new int GetCurrentTimeDate(out uint TimeDate);
+
+	[PreserveSig]
+	new int GetCurrentSystemUpTime(out uint UpTime);
+
+	[PreserveSig]
+	new int GetDumpFormatFlags(out DEBUG_FORMAT FormatFlags);
+
+	[PreserveSig]
+	new int GetNumberTextReplacements(out uint NumRepl);
+
+	[PreserveSig]
+	new int GetTextReplacement([In][MarshalAs(UnmanagedType.LPStr)] string SrcText, [In] uint Index, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder SrcBuffer, [In] int SrcBufferSize, out uint SrcSize, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder DstBuffer, [In] int DstBufferSize, out uint DstSize);
+
+	[PreserveSig]
+	new int SetTextReplacement([In][MarshalAs(UnmanagedType.LPStr)] string SrcText, [In][MarshalAs(UnmanagedType.LPStr)] string DstText);
+
+	[PreserveSig]
+	new int RemoveTextReplacements();
+
+	[PreserveSig]
+	new int OutputTextReplacements([In] DEBUG_OUTCTL OutputControl, [In] DEBUG_OUT_TEXT_REPL Flags);
+
+	[PreserveSig]
+	new int GetAssemblyOptions(out DEBUG_ASMOPT Options);
+
+	[PreserveSig]
+	new int AddAssemblyOptions([In] DEBUG_ASMOPT Options);
+
+	[PreserveSig]
+	new int RemoveAssemblyOptions([In] DEBUG_ASMOPT Options);
+
+	[PreserveSig]
+	new int SetAssemblyOptions([In] DEBUG_ASMOPT Options);
+
+	[PreserveSig]
+	new int GetExpressionSyntax(out DEBUG_EXPR Flags);
+
+	[PreserveSig]
+	new int SetExpressionSyntax([In] DEBUG_EXPR Flags);
+
+	[PreserveSig]
+	new int SetExpressionSyntaxByName([In][MarshalAs(UnmanagedType.LPStr)] string AbbrevName);
+
+	[PreserveSig]
+	new int GetNumberExpressionSyntaxes(out uint Number);
+
+	[PreserveSig]
+	new int GetExpressionSyntaxNames([In] uint Index, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder FullNameBuffer, [In] int FullNameBufferSize, out uint FullNameSize, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder AbbrevNameBuffer, [In] int AbbrevNameBufferSize, out uint AbbrevNameSize);
+
+	[PreserveSig]
+	new int GetNumberEvents(out uint Events);
+
+	[PreserveSig]
+	new int GetEventIndexDescription([In] uint Index, [In] DEBUG_EINDEX Which, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint DescSize);
+
+	[PreserveSig]
+	new int GetCurrentEventIndex(out uint Index);
+
+	[PreserveSig]
+	new int SetNextEventIndex([In] DEBUG_EINDEX Relation, [In] uint Value, out uint NextIndex);
+
+	[PreserveSig]
+	new int GetLogFileWide([Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint FileSize, [MarshalAs(UnmanagedType.Bool)] out bool Append);
+
+	[PreserveSig]
+	new int OpenLogFileWide([In][MarshalAs(UnmanagedType.LPWStr)] string File, [In][MarshalAs(UnmanagedType.Bool)] bool Append);
+
+	[PreserveSig]
+	new int InputWide([Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint InputSize);
+
+	[PreserveSig]
+	new int ReturnInputWide([In][MarshalAs(UnmanagedType.LPWStr)] string Buffer);
+
+	[PreserveSig]
+	new int OutputWide([In] DEBUG_OUTPUT Mask, [In][MarshalAs(UnmanagedType.LPWStr)] string Format);
+
+	[PreserveSig]
+	new int OutputVaListWide([In] DEBUG_OUTPUT Mask, [In][MarshalAs(UnmanagedType.LPWStr)] string Format, [In] IntPtr va_list_Args);
+
+	[PreserveSig]
+	new int ControlledOutputWide([In] DEBUG_OUTCTL OutputControl, [In] DEBUG_OUTPUT Mask, [In][MarshalAs(UnmanagedType.LPWStr)] string Format);
+
+	[PreserveSig]
+	new int ControlledOutputVaListWide([In] DEBUG_OUTCTL OutputControl, [In] DEBUG_OUTPUT Mask, [In][MarshalAs(UnmanagedType.LPWStr)] string Format, [In] IntPtr va_list_Args);
+
+	[PreserveSig]
+	new int OutputPromptWide([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPWStr)] string Format);
+
+	[PreserveSig]
+	new int OutputPromptVaListWide([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPWStr)] string Format, [In] IntPtr va_list_Args);
+
+	[PreserveSig]
+	new int GetPromptTextWide([Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint TextSize);
+
+	[PreserveSig]
+	new int AssembleWide([In] ulong Offset, [In][MarshalAs(UnmanagedType.LPWStr)] string Instr, out ulong EndOffset);
+
+	[PreserveSig]
+	new int DisassembleWide([In] ulong Offset, [In] DEBUG_DISASM Flags, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint DisassemblySize, out ulong EndOffset);
+
+	[PreserveSig]
+	new int GetProcessorTypeNamesWide([In] IMAGE_FILE_MACHINE Type, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder FullNameBuffer, [In] int FullNameBufferSize, out uint FullNameSize, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder AbbrevNameBuffer, [In] int AbbrevNameBufferSize, out uint AbbrevNameSize);
+
+	[PreserveSig]
+	new int GetTextMacroWide([In] uint Slot, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint MacroSize);
+
+	[PreserveSig]
+	new int SetTextMacroWide([In] uint Slot, [In][MarshalAs(UnmanagedType.LPWStr)] string Macro);
+
+	[PreserveSig]
+	new int EvaluateWide([In][MarshalAs(UnmanagedType.LPWStr)] string Expression, [In] DEBUG_VALUE_TYPE DesiredType, out DEBUG_VALUE Value, out uint RemainderIndex);
+
+	[PreserveSig]
+	new int ExecuteWide([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPWStr)] string Command, [In] DEBUG_EXECUTE Flags);
+
+	[PreserveSig]
+	new int ExecuteCommandFileWide([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPWStr)] string CommandFile, [In] DEBUG_EXECUTE Flags);
+
+	[PreserveSig]
+	new int GetBreakpointByIndex2([In] uint Index, [MarshalAs(UnmanagedType.Interface)] out IDebugBreakpoint2 bp);
+
+	[PreserveSig]
+	new int GetBreakpointById2([In] uint Id, [MarshalAs(UnmanagedType.Interface)] out IDebugBreakpoint2 bp);
+
+	[PreserveSig]
+	new int AddBreakpoint2([In] DEBUG_BREAKPOINT_TYPE Type, [In] uint DesiredId, [MarshalAs(UnmanagedType.Interface)] out IDebugBreakpoint2 Bp);
+
+	[PreserveSig]
+	new int RemoveBreakpoint2([In][MarshalAs(UnmanagedType.Interface)] IDebugBreakpoint2 Bp);
+
+	[PreserveSig]
+	new int AddExtensionWide([In][MarshalAs(UnmanagedType.LPWStr)] string Path, [In] uint Flags, out ulong Handle);
+
+	[PreserveSig]
+	new int GetExtensionByPathWide([In][MarshalAs(UnmanagedType.LPWStr)] string Path, out ulong Handle);
+
+	[PreserveSig]
+	new int CallExtensionWide([In] ulong Handle, [In][MarshalAs(UnmanagedType.LPWStr)] string Function, [In][MarshalAs(UnmanagedType.LPWStr)] string Arguments);
+
+	[PreserveSig]
+	new int GetExtensionFunctionWide([In] ulong Handle, [In][MarshalAs(UnmanagedType.LPWStr)] string FuncName, out IntPtr Function);
+
+	[PreserveSig]
+	new int GetEventFilterTextWide([In] uint Index, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint TextSize);
+
+	[PreserveSig]
+	new int GetEventFilterCommandWide([In] uint Index, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint CommandSize);
+
+	[PreserveSig]
+	new int SetEventFilterCommandWide([In] uint Index, [In][MarshalAs(UnmanagedType.LPWStr)] string Command);
+
+	[PreserveSig]
+	new int GetSpecificEventFilterArgumentWide([In] uint Index, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint ArgumentSize);
+
+	[PreserveSig]
+	new int SetSpecificEventFilterArgumentWide([In] uint Index, [In][MarshalAs(UnmanagedType.LPWStr)] string Argument);
+
+	[PreserveSig]
+	new int GetExceptionFilterSecondCommandWide([In] uint Index, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint CommandSize);
+
+	[PreserveSig]
+	new int SetExceptionFilterSecondCommandWide([In] uint Index, [In][MarshalAs(UnmanagedType.LPWStr)] string Command);
+
+	[PreserveSig]
+	new int GetLastEventInformationWide(out DEBUG_EVENT Type, out uint ProcessId, out uint ThreadId, [In] IntPtr ExtraInformation, [In] int ExtraInformationSize, out uint ExtraInformationUsed, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Description, [In] int DescriptionSize, out uint DescriptionUsed);
+
+	[PreserveSig]
+	new int GetTextReplacementWide([In][MarshalAs(UnmanagedType.LPWStr)] string SrcText, [In] uint Index, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder SrcBuffer, [In] int SrcBufferSize, out uint SrcSize, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder DstBuffer, [In] int DstBufferSize, out uint DstSize);
+
+	[PreserveSig]
+	new int SetTextReplacementWide([In][MarshalAs(UnmanagedType.LPWStr)] string SrcText, [In][MarshalAs(UnmanagedType.LPWStr)] string DstText);
+
+	[PreserveSig]
+	new int SetExpressionSyntaxByNameWide([In][MarshalAs(UnmanagedType.LPWStr)] string AbbrevName);
+
+	[PreserveSig]
+	new int GetExpressionSyntaxNamesWide([In] uint Index, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder FullNameBuffer, [In] int FullNameBufferSize, out uint FullNameSize, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder AbbrevNameBuffer, [In] int AbbrevNameBufferSize, out uint AbbrevNameSize);
+
+	[PreserveSig]
+	new int GetEventIndexDescriptionWide([In] uint Index, [In] DEBUG_EINDEX Which, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint DescSize);
+
+	[PreserveSig]
+	new int GetLogFile2([Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint FileSize, out DEBUG_LOG Flags);
+
+	[PreserveSig]
+	new int OpenLogFile2([In][MarshalAs(UnmanagedType.LPStr)] string File, out DEBUG_LOG Flags);
+
+	[PreserveSig]
+	new int GetLogFile2Wide([Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint FileSize, out DEBUG_LOG Flags);
+
+	[PreserveSig]
+	new int OpenLogFile2Wide([In][MarshalAs(UnmanagedType.LPWStr)] string File, out DEBUG_LOG Flags);
+
+	[PreserveSig]
+	new int GetSystemVersionValues(out uint PlatformId, out uint Win32Major, out uint Win32Minor, out uint KdMajor, out uint KdMinor);
+
+	[PreserveSig]
+	new int GetSystemVersionString([In] DEBUG_SYSVERSTR Which, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint StringSize);
+
+	[PreserveSig]
+	new int GetSystemVersionStringWide([In] DEBUG_SYSVERSTR Which, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder Buffer, [In] int BufferSize, out uint StringSize);
+
+	[PreserveSig]
+	new int GetContextStackTrace([In] IntPtr StartContext, [In] uint StartContextSize, [Out][MarshalAs(UnmanagedType.LPArray)] DEBUG_STACK_FRAME[] Frames, [In] int FrameSize, [In] IntPtr FrameContexts, [In] uint FrameContextsSize, [In] uint FrameContextsEntrySize, out uint FramesFilled);
+
+	[PreserveSig]
+	new int OutputContextStackTrace([In] DEBUG_OUTCTL OutputControl, [In][MarshalAs(UnmanagedType.LPArray)] DEBUG_STACK_FRAME[] Frames, [In] int FramesSize, [In] IntPtr FrameContexts, [In] uint FrameContextsSize, [In] uint FrameContextsEntrySize, [In] DEBUG_STACK Flags);
+
+	[PreserveSig]
+	new int GetStoredEventInformation(out DEBUG_EVENT Type, out uint ProcessId, out uint ThreadId, [In] IntPtr Context, [In] uint ContextSize, out uint ContextUsed, [In] IntPtr ExtraInformation, [In] uint ExtraInformationSize, out uint ExtraInformationUsed);
+
+	[PreserveSig]
+	new int GetManagedStatus(out DEBUG_MANAGED Flags, [In] DEBUG_MANSTR WhichString, [Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder String, [In] int StringSize, out uint StringNeeded);
+
+	[PreserveSig]
+	new int GetManagedStatusWide(out DEBUG_MANAGED Flags, [In] DEBUG_MANSTR WhichString, [Out][MarshalAs(UnmanagedType.LPWStr)] StringBuilder String, [In] int StringSize, out uint StringNeeded);
+
+	[PreserveSig]
+	new int ResetManagedStatus([In] DEBUG_MANRESET Flags);
+
+	[PreserveSig]
+	int GetStackTraceEx([In] ulong FrameOffset, [In] ulong StackOffset, [In] ulong InstructionOffset, [Out][MarshalAs(UnmanagedType.LPArray)] DEBUG_STACK_FRAME_EX[] Frames, [In] int FramesSize, out uint FramesFilled);
+
+	[PreserveSig]
+	int OutputStackTraceEx([In] uint OutputControl, [In][MarshalAs(UnmanagedType.LPArray)] DEBUG_STACK_FRAME_EX[] Frames, [In] int FramesSize, [In] DEBUG_STACK Flags);
+
+	[PreserveSig]
+	int GetContextStackTraceEx([In] IntPtr StartContext, [In] uint StartContextSize, [Out][MarshalAs(UnmanagedType.LPArray)] DEBUG_STACK_FRAME_EX[] Frames, [In] int FramesSize, [In] IntPtr FrameContexts, [In] uint FrameContextsSize, [In] uint FrameContextsEntrySize, out uint FramesFilled);
+
+	[PreserveSig]
+	int OutputContextStackTraceEx([In] uint OutputControl, [In][MarshalAs(UnmanagedType.LPArray)] DEBUG_STACK_FRAME_EX[] Frames, [In] int FramesSize, [In] IntPtr FrameContexts, [In] uint FrameContextsSize, [In] uint FrameContextsEntrySize, [In] DEBUG_STACK Flags);
+
+	[PreserveSig]
+	int GetBreakpointByGuid([In][MarshalAs(UnmanagedType.LPStruct)] Guid Guid, out IDebugBreakpoint3 Bp);
+}

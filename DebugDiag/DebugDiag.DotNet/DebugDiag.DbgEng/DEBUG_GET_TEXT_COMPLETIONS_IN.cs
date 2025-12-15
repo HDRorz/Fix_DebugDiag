@@ -1,0 +1,14 @@
+namespace DebugDiag.DbgEng;
+
+public struct DEBUG_GET_TEXT_COMPLETIONS_IN
+{
+	public DEBUG_GET_TEXT_COMPLETIONS Flags;
+
+	public uint MatchCountLimit;
+
+	public ulong Reserved0;
+
+	public ulong Reserved1;
+
+	public ulong Reserved2;
+}

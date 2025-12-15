@@ -1,0 +1,36 @@
+namespace DebugDiag.DbgEng;
+
+public enum MINIDUMP_STREAM_TYPE : uint
+{
+	UnusedStream = 0u,
+	ReservedStream0 = 1u,
+	ReservedStream1 = 2u,
+	ThreadListStream = 3u,
+	ModuleListStream = 4u,
+	MemoryListStream = 5u,
+	ExceptionStream = 6u,
+	SystemInfoStream = 7u,
+	ThreadExListStream = 8u,
+	Memory64ListStream = 9u,
+	CommentStreamA = 10u,
+	CommentStreamW = 11u,
+	HandleDataStream = 12u,
+	FunctionTableStream = 13u,
+	UnloadedModuleListStream = 14u,
+	MiscInfoStream = 15u,
+	MemoryInfoListStream = 16u,
+	ThreadInfoListStream = 17u,
+	HandleOperationListStream = 18u,
+	ceStreamNull = 32768u,
+	ceStreamSystemInfo = 32769u,
+	ceStreamException = 32770u,
+	ceStreamModuleList = 32771u,
+	ceStreamProcessList = 32772u,
+	ceStreamThreadList = 32773u,
+	ceStreamThreadContextList = 32774u,
+	ceStreamThreadCallStackList = 32775u,
+	ceStreamMemoryVirtualList = 32776u,
+	ceStreamMemoryPhysicalList = 32777u,
+	ceStreamBucketParameters = 32778u,
+	LastReservedStream = 65535u
+}

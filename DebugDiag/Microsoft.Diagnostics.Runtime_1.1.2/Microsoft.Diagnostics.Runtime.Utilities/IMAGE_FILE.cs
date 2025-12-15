@@ -1,0 +1,20 @@
+using System;
+
+namespace Microsoft.Diagnostics.Runtime.Utilities;
+
+[Flags]
+public enum IMAGE_FILE
+{
+	RELOCS_STRIPPED = 1,
+	EXECUTABLE_IMAGE = 2,
+	LINE_NUMS_STRIPPED = 4,
+	LOCAL_SYMS_STRIPPED = 8,
+	LARGE_ADDRESS_AWARE = 0x20,
+	_32BIT_MACHINE = 0x100,
+	DEBUG_STRIPPED = 0x200,
+	REMOVABLE_RUN_FROM_SWAP = 0x400,
+	NET_RUN_FROM_SWAP = 0x800,
+	SYSTEM = 0x1000,
+	DLL = 0x2000,
+	UP_SYSTEM_ONLY = 0x4000
+}

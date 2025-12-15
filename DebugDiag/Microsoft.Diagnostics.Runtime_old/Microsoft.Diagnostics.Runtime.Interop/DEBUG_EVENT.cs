@@ -1,0 +1,21 @@
+using System;
+
+namespace Microsoft.Diagnostics.Runtime.Interop;
+
+[Flags]
+public enum DEBUG_EVENT : uint
+{
+	BREAKPOINT = 1u,
+	EXCEPTION = 2u,
+	CREATE_THREAD = 4u,
+	EXIT_THREAD = 8u,
+	CREATE_PROCESS = 0x10u,
+	EXIT_PROCESS = 0x20u,
+	LOAD_MODULE = 0x40u,
+	UNLOAD_MODULE = 0x80u,
+	SYSTEM_ERROR = 0x100u,
+	SESSION_STATUS = 0x200u,
+	CHANGE_DEBUGGEE_STATE = 0x400u,
+	CHANGE_ENGINE_STATE = 0x800u,
+	CHANGE_SYMBOL_STATE = 0x1000u
+}

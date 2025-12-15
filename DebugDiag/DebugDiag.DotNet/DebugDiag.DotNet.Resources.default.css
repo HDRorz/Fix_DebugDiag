@@ -1,0 +1,336 @@
+/* ***********************************************/
+BODY  {
+	font-family : verdana;
+	font-size : 8pt;
+	background : white;
+	color : black;
+}
+
+.normal  {
+	font-family : verdana;
+	font-size : 8pt;
+}
+
+.tblh  {
+	margin-left : 2px;
+	font-family : verdana;
+	font-size : 8pt;
+	font-weight : bold;
+}
+
+.colh  {
+	margin-left : 2px;
+	font-family : verdana;
+	font-size : 8pt;
+	font-weight : bold;
+}
+
+.rowh  {
+	margin-left : 2px;
+	font-family : verdana;
+	font-size : 8pt;
+	font-weight : bold;
+}
+
+.row  {
+	margin-left : 2px;
+	font-family : verdana;
+	font-size : 8pt;
+}
+
+.rowsilver  {
+	margin-left : 2px;
+	font-family : verdana;
+	font-size : 8pt;
+	font-weight : bold;
+	background-color: Silver;
+}
+
+.rowhlt  {
+	margin-left : 2px;
+	font-family : verdana;
+	font-size : 8pt;
+	background-color: Yellow;
+}
+
+.rowred  {
+	margin-left : 2px;
+	font-family : verdana;
+	font-size : 8pt;
+	color : Red;
+}
+
+.hd8b  {
+	font-family : verdana;
+	font-size : 8pt; 
+	font-weight : bold;
+}
+
+.hd9  {
+	font-family : verdana;
+	font-size : 9pt; 
+}
+
+.hd9b  {
+	font-family : verdana;
+	font-size : 9pt; 
+	font-weight : bold;
+}
+
+.hd10  {
+	font-family : verdana;
+	font-size : 10pt; 
+}
+
+.hd10b  {
+	font-family : verdana;
+	font-size : 10pt; 
+	font-weight : bold;
+}
+
+.hd12  {
+	font-family : verdana;
+	font-size : 12pt; 
+}	 
+
+.hd12b  {
+	font-family : verdana;
+	font-size : 12pt; 
+	font-weight : bold;
+}
+
+.hd14  {
+	font-family : verdana;
+	font-size : 14pt; 
+}
+
+.hd14b  {
+	font-family : verdana;
+	font-size : 14pt; 
+	font-weight : bold;
+}
+
+H1, H2, H3, H4, H5, H6, P, UL, OL, DIR, MENU, DIV, 
+DT, DD, ADDRESS, BLOCKQUOTE, PRE, BR, HR, FORM, DL  {
+	display : block;
+}
+
+B, STRONG, I, EM, CITE, VAR, TT, CODE, KBD, SAMP, 
+IMG, SPAN  {
+	display : inline;
+}
+
+LI  {
+	display : list-item;
+}
+
+H1, H2, H3, H4  {
+	margin-top : 1em;
+	margin-bottom : 1em;
+}
+
+H5, H6  {
+	margin-top : 1em;
+}
+
+H1  {
+	text-align : center;
+}
+
+H1, H2, H4, H6  {
+	font-weight : bold;
+}
+
+H3, H5  {
+	font-style : italic;
+}
+
+H1  {
+	font-size : 14pt;
+}
+
+H2  {
+	font-size : 12pt;
+}
+
+H3  {
+	font-size : 10pt;
+}
+
+B, STRONG  {
+	font-weight : bolder;
+}
+
+/* relative to the parent*/
+I, CITE, EM, VAR, ADDRESS, BLOCKQUOTE  {
+	font-style : italic;
+}
+
+PRE, TT, CODE, KBD, SAMP  {
+	font-family : monospace;
+}
+
+PRE  {
+	white-space : pre;
+}
+
+ADDRESS  {
+	margin-left : 3em;
+}
+
+BLOCKQUOTE  {
+	margin-left : 3em;
+	margin-right : 3em;
+}
+
+UL, DIR  {
+	list-style : disc;
+	margin-left : 1em;
+	font-family : verdana;
+	font-size : 8pt;
+}
+
+OL  {
+	list-style : decimal;
+}
+
+MENU  {
+	margin : 0;
+}
+
+/* tight formatting*/
+LI  {
+	margin-left : 3em;
+}
+
+DT  {
+	margin-bottom : 0;
+}
+
+DD  {
+	margin-top : 0;
+	margin-left : 3em;
+}
+
+HR  {
+	border-top : solid;
+}
+
+/* 'border-bottom' could also have been used*/
+A:link  {
+	color : blue;
+}
+
+/* unvisited link*/
+A:visited  {
+	color : grey;
+}
+
+/* visited links*/
+A:active  {
+	color : lime;
+}
+
+/* setting the anchor border around IMG elements
+   requires contextual selectors*/
+A:link IMG  {
+	border : 2px solid blue;
+}
+
+A:visited IMG  {
+	border : 2px solid grey;
+}
+
+A:active IMG  {
+	border : 2px solid lime;
+}
+
+
+.myCustomTitle
+{
+	background-color: #0669B2;
+	color: #FFFFFF;
+	font-weight: bold;
+	padding-left: 10px;
+	font-family : verdana;
+	font-size : 8pt;
+	BORDER-TOP: #0669B2 3px solid;
+	BORDER-BOTTOM: #0669B2 4px solid;
+}
+.myCustomTitle A:link, .myCustomTitle A:visited
+{
+	color: #FFFFFF;
+	padding-right: 10px;
+}
+
+.myCustomTitle A:hover, .myCustomTitle A:active
+{
+	color: #FFA500;
+	padding-right: 10px;
+}
+
+.myCustomTitleLinkSimple
+{
+    PADDING-RIGHT: 30px;
+    BORDER-TOP: darkblue 1px solid;
+    FONT-WEIGHT: bold;
+    COLOR: #ffffff;
+    BORDER-BOTTOM: darkblue 1px solid;
+    BACKGROUND-COLOR: #658ad6
+}
+.myCustomTitleLink
+{
+    BORDER-RIGHT: darkblue 1px solid;
+    PADDING-RIGHT: 30px;
+    BORDER-TOP: darkblue 1px solid;
+    FONT-WEIGHT: bold;
+    BORDER-LEFT: medium none;
+    COLOR: #ffffff;
+    BORDER-BOTTOM: darkblue 1px solid;
+    BACKGROUND-COLOR: #658ad6
+}
+
+.myCustomText
+{
+    TEXT-ALIGN: left;
+    font-family : verdana;
+	font-size : 8pt;
+}
+
+TABLE.myCustomTable
+{
+    BORDER-RIGHT: #a4a3be 1px solid;
+    BORDER-TOP: #a4a3be 1px solid;
+    BORDER-LEFT: #a4a3be 1px solid;
+    WIDTH: 100%;
+    BORDER-BOTTOM: #a4a3be 1px solid;
+    BACKGROUND-COLOR: #f8f8f8
+}
+TR.myCustomHeader TD
+{
+	background-color: #DADADA;
+	color: #000000;
+	font-weight: bolder;
+	font-family : verdana;
+	font-size : 8pt;
+}
+
+TABLE.myCustomContainer
+{
+    WIDTH: 100%
+}
+TR.announcementListHead TD
+{
+    BORDER-TOP: #808080 1px solid;
+    FONT-WEIGHT: bold;
+    FONT-SIZE: 8pt;
+    BORDER-BOTTOM: #808080 2px solid;
+    BACKGROUND-COLOR: #cccccc
+}
+TR.announcementRow TD
+{
+    BORDER-BOTTOM: #cccccc 1px solid
+}
+
+
+

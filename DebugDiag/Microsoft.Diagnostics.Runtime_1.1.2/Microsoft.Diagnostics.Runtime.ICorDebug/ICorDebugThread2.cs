@@ -1,0 +1,20 @@
+using System.Runtime.InteropServices;
+
+namespace Microsoft.Diagnostics.Runtime.ICorDebug;
+
+[ComImport]
+[Guid("2BD956D9-7B07-4BEF-8A98-12AA862417C5")]
+[ComConversionLoss]
+[InterfaceType(1)]
+public interface ICorDebugThread2
+{
+	void GetActiveFunctions([In] uint cFunctions, out uint pcFunctions, [Out][MarshalAs(UnmanagedType.LPArray, SizeParamIndex = 1)] COR_ACTIVE_FUNCTION[] pFunctions);
+
+	void GetConnectionID(out uint pdwConnectionId);
+
+	void GetTaskID(out ulong pTaskId);
+
+	void GetVolatileOSThreadID(out uint pdwTid);
+
+	void InterceptCurrentException([In][MarshalAs(UnmanagedType.Interface)] ICorDebugFrame pFrame);
+}

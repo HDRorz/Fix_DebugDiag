@@ -1,0 +1,302 @@
+using System;
+using System.Collections.Generic;
+using System.Reflection;
+using Microsoft.Diagnostics.Runtime.Utilities;
+
+namespace Microsoft.Diagnostics.Runtime.Desktop;
+
+internal class DesktopStaticField : ClrStaticField
+{
+	private readonly IFieldData _field;
+
+	private BaseDesktopHeapType _type;
+
+	private readonly BaseDesktopHeapType _containingType;
+
+	private readonly FieldAttributes _attributes;
+
+	private readonly object _defaultValue;
+
+	private readonly DesktopGCHeap _heap;
+
+	private readonly Lazy<ClrType> _typeResolver;
+
+	public override uint Token { get; }
+
+	public override bool HasDefaultValue => _defaultValue != null;
+
+	public override bool IsPublic => (_attributes & FieldAttributes.FieldAccessMask) == FieldAttributes.Public;
+
+	public override bool IsPrivate => (_attributes & FieldAttributes.FieldAccessMask) == FieldAttributes.Private;
+
+	public override bool IsInternal => (_attributes & FieldAttributes.FieldAccessMask) == FieldAttributes.Assembly;
+
+	public override bool IsProtected => (_attributes & FieldAttributes.FieldAccessMask) == FieldAttributes.Family;
+
+	public override ClrElementType ElementType => (ClrElementType)_field.CorElementType;
+
+	public override string Name { get; }
+
+	public override ClrType Type
+	{
+		get
+		{
+			if (_type == null)
+			{
+				return _typeResolver.Value;
+			}
+			return _type;
+		}
+	}
+
+	public override int Offset => (int)_field.Offset;
+
+	public override bool HasSimpleValue => _containingType != null;
+
+	public override int Size
+	{
+		get
+		{
+			if (_type == null)
+			{
+				_type = (BaseDesktopHeapType)TryBuildType(_heap);
+			}
+			return DesktopInstanceField.GetSize(_type, ElementType);
+		}
+	}
+
+	public DesktopStaticField(DesktopGCHeap heap, IFieldData field, BaseDesktopHeapType containingType, string name, FieldAttributes attributes, object defaultValue, IntPtr sig, int sigLen)
+	{
+		DesktopStaticField desktopStaticField = this;
+		_field = field;
+		Name = name;
+		_attributes = attributes;
+		_type = (BaseDesktopHeapType)heap.GetTypeByMethodTable(field.TypeMethodTable, 0uL);
+		_defaultValue = defaultValue;
+		_heap = heap;
+		Token = field.FieldToken;
+		if (_type != null && ElementType != ClrElementType.Class)
+		{
+			_type.ElementType = ElementType;
+		}
+		_containingType = containingType;
+		if (_type == null && sig != IntPtr.Zero && sigLen > 0)
+		{
+			SigParser sigParser = new SigParser(sig, sigLen);
+			int etype = 0;
+			if (sigParser.GetCallingConvInfo(out var _) && sigParser.SkipCustomModifiers() && sigParser.GetElemType(out etype))
+			{
+				switch ((ClrElementType)etype)
+				{
+				case ClrElementType.Array:
+				{
+					bool num = sigParser.PeekElemType(out etype) && sigParser.SkipExactlyOne();
+					int data2 = 0;
+					if (num && sigParser.GetData(out data2))
+					{
+						_type = heap.GetArrayType((ClrElementType)etype, data2, null);
+					}
+					break;
+				}
+				case ClrElementType.SZArray:
+				{
+					sigParser.PeekElemType(out etype);
+					ClrElementType clrElementType = (ClrElementType)etype;
+					if (clrElementType.IsObjectReference())
+					{
+						_type = (BaseDesktopHeapType)heap.GetBasicType(ClrElementType.SZArray);
+					}
+					else
+					{
+						_type = heap.GetArrayType(clrElementType, -1, null);
+					}
+					break;
+				}
+				case ClrElementType.Pointer:
+				{
+					sigParser.GetElemType(out etype);
+					ClrElementType clrElementType = (ClrElementType)etype;
+					sigParser.GetToken(out var token);
+					BaseDesktopHeapType baseDesktopHeapType = (BaseDesktopHeapType)heap.GetGCHeapTypeFromModuleAndToken(field.Module, Convert.ToUInt32(token));
+					if (baseDesktopHeapType == null)
+					{
+						baseDesktopHeapType = (BaseDesktopHeapType)heap.GetBasicType(clrElementType);
+					}
+					_type = heap.CreatePointerType(baseDesktopHeapType, clrElementType, null);
+					break;
+				}
+				}
+			}
+		}
+		if (_type != null)
+		{
+			return;
+		}
+		_typeResolver = new Lazy<ClrType>(delegate
+		{
+			ClrType clrType = (BaseDesktopHeapType)desktopStaticField.TryBuildType(desktopStaticField._heap);
+			if (clrType == null)
+			{
+				clrType = (BaseDesktopHeapType)heap.GetBasicType(desktopStaticField.ElementType);
+			}
+			return clrType;
+		});
+	}
+
+	public override object GetDefaultValue()
+	{
+		return _defaultValue;
+	}
+
+	private ClrType TryBuildType(ClrHeap heap)
+	{
+		IList<ClrAppDomain> appDomains = heap.Runtime.AppDomains;
+		ClrType[] array = new ClrType[appDomains.Count];
+		ClrElementType elementType = ElementType;
+		if (elementType.IsPrimitive() || elementType == ClrElementType.String)
+		{
+			return ((DesktopGCHeap)heap).GetBasicType(elementType);
+		}
+		int num = 0;
+		foreach (ClrAppDomain item in appDomains)
+		{
+			object value = GetValue(item);
+			if (value != null && value is ulong && (ulong)value != 0L)
+			{
+				array[num++] = heap.GetObjectType((ulong)value);
+			}
+		}
+		int num2 = int.MaxValue;
+		ClrType clrType = null;
+		for (int i = 0; i < num; i++)
+		{
+			ClrType clrType2 = array[i];
+			if (clrType2 != clrType && clrType2 != null)
+			{
+				int depth = GetDepth(clrType2);
+				if (depth < num2)
+				{
+					clrType = clrType2;
+					num2 = depth;
+				}
+			}
+		}
+		return clrType;
+	}
+
+	private int GetDepth(ClrType curr)
+	{
+		int num = 0;
+		while (curr != null)
+		{
+			curr = curr.BaseType;
+			num++;
+		}
+		return num;
+	}
+
+	public override object GetValue(ClrAppDomain appDomain, bool convertStrings = true)
+	{
+		if (!HasSimpleValue)
+		{
+			return null;
+		}
+		ulong num = GetAddress(appDomain);
+		if (ElementType == ClrElementType.String)
+		{
+			object valueAtAddress = _containingType.DesktopHeap.GetValueAtAddress(ClrElementType.Object, num);
+			if (valueAtAddress == null || !(valueAtAddress is ulong))
+			{
+				if (!convertStrings)
+				{
+					return 0uL;
+				}
+				return null;
+			}
+			num = (ulong)valueAtAddress;
+			if (!convertStrings)
+			{
+				return num;
+			}
+		}
+		ClrElementType clrElementType = ElementType;
+		if (clrElementType == ClrElementType.Struct)
+		{
+			clrElementType = ClrElementType.Object;
+		}
+		if (clrElementType == ClrElementType.Object && num == 0L)
+		{
+			return 0uL;
+		}
+		return _containingType.DesktopHeap.GetValueAtAddress(clrElementType, num);
+	}
+
+	public override ulong GetAddress(ClrAppDomain appDomain)
+	{
+		if (_containingType == null)
+		{
+			return 0uL;
+		}
+		bool shared = _containingType.Shared;
+		IDomainLocalModuleData domainLocalModuleData = null;
+		if (shared)
+		{
+			ulong moduleId = _containingType.DesktopModule.ModuleId;
+			domainLocalModuleData = _containingType.DesktopHeap.DesktopRuntime.GetDomainLocalModuleById(appDomain.Address, moduleId);
+			if (!IsInitialized(domainLocalModuleData))
+			{
+				return 0uL;
+			}
+		}
+		else
+		{
+			ulong moduleAddress = _containingType.GetModuleAddress(appDomain);
+			if (moduleAddress != 0L)
+			{
+				domainLocalModuleData = _containingType.DesktopHeap.DesktopRuntime.GetDomainLocalModule(appDomain.Address, moduleAddress);
+			}
+		}
+		if (domainLocalModuleData == null)
+		{
+			return 0uL;
+		}
+		if (ElementType.IsPrimitive())
+		{
+			return domainLocalModuleData.NonGCStaticDataStart + _field.Offset;
+		}
+		return domainLocalModuleData.GCStaticDataStart + _field.Offset;
+	}
+
+	public override bool IsInitialized(ClrAppDomain appDomain)
+	{
+		if (_containingType == null)
+		{
+			return false;
+		}
+		if (!_containingType.Shared)
+		{
+			return true;
+		}
+		ulong moduleId = _containingType.DesktopModule.ModuleId;
+		IDomainLocalModuleData domainLocalModuleById = _containingType.DesktopHeap.DesktopRuntime.GetDomainLocalModuleById(appDomain.Address, moduleId);
+		if (domainLocalModuleById == null)
+		{
+			return false;
+		}
+		return IsInitialized(domainLocalModuleById);
+	}
+
+	private bool IsInitialized(IDomainLocalModuleData data)
+	{
+		if (data == null || _containingType == null)
+		{
+			return false;
+		}
+		ulong addr = data.ClassData + (uint)((int)_containingType.MetadataToken & -33554433) - 1;
+		if (!_heap.DesktopRuntime.ReadByte(addr, out byte value))
+		{
+			return false;
+		}
+		return (value & 1) != 0;
+	}
+}

@@ -1,0 +1,73 @@
+using System.Runtime.InteropServices;
+using System.Text;
+
+namespace Microsoft.Diagnostics.Runtime.Interop;
+
+[ComImport]
+[InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
+[Guid("5bd9d474-5975-423a-b88b-65a8e7110e65")]
+public interface IDebugBreakpoint
+{
+	[PreserveSig]
+	int GetId(out uint Id);
+
+	[PreserveSig]
+	int GetType(out DEBUG_BREAKPOINT_TYPE BreakType, out uint ProcType);
+
+	[PreserveSig]
+	int GetAdder([MarshalAs(UnmanagedType.Interface)] out IDebugClient Adder);
+
+	[PreserveSig]
+	int GetFlags(out DEBUG_BREAKPOINT_FLAG Flags);
+
+	[PreserveSig]
+	int AddFlags([In] DEBUG_BREAKPOINT_FLAG Flags);
+
+	[PreserveSig]
+	int RemoveFlags([In] DEBUG_BREAKPOINT_FLAG Flags);
+
+	[PreserveSig]
+	int SetFlags([In] DEBUG_BREAKPOINT_FLAG Flags);
+
+	[PreserveSig]
+	int GetOffset(out ulong Offset);
+
+	[PreserveSig]
+	int SetOffset([In] ulong Offset);
+
+	[PreserveSig]
+	int GetDataParameters(out uint Size, out DEBUG_BREAKPOINT_ACCESS_TYPE AccessType);
+
+	[PreserveSig]
+	int SetDataParameters([In] uint Size, [In] DEBUG_BREAKPOINT_ACCESS_TYPE AccessType);
+
+	[PreserveSig]
+	int GetPassCount(out uint Count);
+
+	[PreserveSig]
+	int SetPassCount([In] uint Count);
+
+	[PreserveSig]
+	int GetCurrentPassCount(out uint Count);
+
+	[PreserveSig]
+	int GetMatchThreadId(out uint Id);
+
+	[PreserveSig]
+	int SetMatchThreadId([In] uint Thread);
+
+	[PreserveSig]
+	int GetCommand([Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint CommandSize);
+
+	[PreserveSig]
+	int SetCommand([In][MarshalAs(UnmanagedType.LPStr)] string Command);
+
+	[PreserveSig]
+	int GetOffsetExpression([Out][MarshalAs(UnmanagedType.LPStr)] StringBuilder Buffer, [In] int BufferSize, out uint ExpressionSize);
+
+	[PreserveSig]
+	int SetOffsetExpression([In][MarshalAs(UnmanagedType.LPStr)] string Expression);
+
+	[PreserveSig]
+	int GetParameters(out DEBUG_BREAKPOINT_PARAMETERS Params);
+}

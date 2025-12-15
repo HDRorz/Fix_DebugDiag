@@ -1,0 +1,145 @@
+<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+  <PropertyGroup>
+    <AssemblyName>DebugDiag.DotNet</AssemblyName>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+    <UseWindowsForms>True</UseWindowsForms>
+    <TargetFramework>net45</TargetFramework>
+  </PropertyGroup>
+  <PropertyGroup>
+    <LangVersion>12.0</LangVersion>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="DebugDiag.DotNet.Resources.ASP.png" />
+    <None Remove="DebugDiag.DotNet.Resources.CPU.png" />
+    <None Remove="DebugDiag.DotNet.Resources.down.png" />
+    <None Remove="DebugDiag.DotNet.Resources.error.png" />
+    <None Remove="DebugDiag.DotNet.Resources.information.png" />
+    <None Remove="DebugDiag.DotNet.Resources.up.png" />
+    <None Remove="DebugDiag.DotNet.Resources.vkb.png" />
+    <None Remove="DebugDiag.DotNet.Resources.warning.png" />
+    <None Remove="DebugDiag.DotNet.Resources.debugdiag-analysis.png" />
+    <None Remove="DebugDiag.DotNet.Resources.collapsedButton.png" />
+    <None Remove="DebugDiag.DotNet.Resources.expandedButton.png" />
+    <None Remove="DebugDiag.DotNet.Resources.reportError.png" />
+    <None Remove="DebugDiag.DotNet.Resources.reportWarning.png" />
+    <None Remove="DebugDiag.DotNet.Resources.settings_97x52.png" />
+    <None Remove="DebugDiag.DotNet.Resources.error_52x52.png" />
+    <None Remove="DebugDiag.DotNet.Resources.information_52x52.png" />
+    <None Remove="DebugDiag.DotNet.Resources.notification_52x52.png" />
+    <None Remove="DebugDiag.DotNet.Resources.verticalLine_2x117.png" />
+    <None Remove="DebugDiag.DotNet.Resources.warning_57x57.png" />
+    <None Remove="DebugDiag.DotNet.Resources.filter_30x30.png" />
+    <None Remove="DebugDiag.DotNet.Resources.closeButton.png" />
+    <None Remove="DebugDiag.DotNet.Resources.tocCollapsed.png" />
+    <None Remove="DebugDiag.DotNet.Resources.tocExpanded.png" />
+    <None Remove="DebugDiag.DotNet.Resources.collapsedButton_21x21.png" />
+    <None Remove="DebugDiag.DotNet.Resources.expandedButton_21x21.png" />
+    <None Remove="DebugDiag.DotNet.Resources.toc.png" />
+    <None Remove="DebugDiag.DotNet.Resources.ui-bg_glass_65_ffffff_1x400.png" />
+    <None Remove="DebugDiag.DotNet.Resources.ui-bg_glass_75_dadada_1x400.png" />
+    <None Remove="DebugDiag.DotNet.Resources.ui-bg_glass_75_e6e6e6_1x400.png" />
+    <None Remove="DebugDiag.DotNet.Resources.erroricon.png" />
+    <None Remove="DebugDiag.DotNet.Resources.informationicon.png" />
+    <None Remove="DebugDiag.DotNet.Resources.notificationicon.png" />
+    <None Remove="DebugDiag.DotNet.Resources.vkbicon.png" />
+    <None Remove="DebugDiag.DotNet.Resources.warningicon.png" />
+    <None Remove="DebugDiag.DotNet.Resources.IISDiag-Analysis.png" />
+    <None Remove="DebugDiag.DotNet.Resources.latest.woff" />
+    <None Remove="DebugDiag.DotNet.Resources.bulletpoint.gif" />
+    <None Remove="DebugDiag.DotNet.Resources.icon.average.gif" />
+    <None Remove="DebugDiag.DotNet.Resources.icon.minus.gif" />
+    <None Remove="DebugDiag.DotNet.Resources.icon.plus.gif" />
+    <None Remove="DebugDiag.DotNet.Resources.default.css" />
+    <None Remove="DebugDiag.DotNet.Resources.main.css" />
+    <None Remove="DebugDiag.DotNet.Resources.ReportText1.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.ReportText2.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.ReportText3.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.ReportText4.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.NewReportText1.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.NewReportText2.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.NewReportText3.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.NewReportText4.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.NewReportText5.htm" />
+    <None Remove="DebugDiag.DotNet.Resources.jquery-1.11.0.min.js" />
+    <None Remove="DebugDiag.DotNet.Resources.jquery-ui-1.10.4.custom.min.js" />
+    <None Remove="DebugDiag.DotNet.Resources.ReportFunctions.js" />
+    <None Remove="DebugDiag.DotNet.Resources.ui.tabs.paging.js" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ASP.png" LogicalName="DebugDiag.DotNet.Resources.ASP.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.CPU.png" LogicalName="DebugDiag.DotNet.Resources.CPU.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.down.png" LogicalName="DebugDiag.DotNet.Resources.down.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.error.png" LogicalName="DebugDiag.DotNet.Resources.error.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.information.png" LogicalName="DebugDiag.DotNet.Resources.information.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.up.png" LogicalName="DebugDiag.DotNet.Resources.up.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.vkb.png" LogicalName="DebugDiag.DotNet.Resources.vkb.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.warning.png" LogicalName="DebugDiag.DotNet.Resources.warning.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.debugdiag-analysis.png" LogicalName="DebugDiag.DotNet.Resources.debugdiag-analysis.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.collapsedButton.png" LogicalName="DebugDiag.DotNet.Resources.collapsedButton.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.expandedButton.png" LogicalName="DebugDiag.DotNet.Resources.expandedButton.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.reportError.png" LogicalName="DebugDiag.DotNet.Resources.reportError.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.reportWarning.png" LogicalName="DebugDiag.DotNet.Resources.reportWarning.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.settings_97x52.png" LogicalName="DebugDiag.DotNet.Resources.settings_97x52.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.error_52x52.png" LogicalName="DebugDiag.DotNet.Resources.error_52x52.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.information_52x52.png" LogicalName="DebugDiag.DotNet.Resources.information_52x52.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.notification_52x52.png" LogicalName="DebugDiag.DotNet.Resources.notification_52x52.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.verticalLine_2x117.png" LogicalName="DebugDiag.DotNet.Resources.verticalLine_2x117.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.warning_57x57.png" LogicalName="DebugDiag.DotNet.Resources.warning_57x57.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.filter_30x30.png" LogicalName="DebugDiag.DotNet.Resources.filter_30x30.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.closeButton.png" LogicalName="DebugDiag.DotNet.Resources.closeButton.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.tocCollapsed.png" LogicalName="DebugDiag.DotNet.Resources.tocCollapsed.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.tocExpanded.png" LogicalName="DebugDiag.DotNet.Resources.tocExpanded.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.collapsedButton_21x21.png" LogicalName="DebugDiag.DotNet.Resources.collapsedButton_21x21.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.expandedButton_21x21.png" LogicalName="DebugDiag.DotNet.Resources.expandedButton_21x21.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.toc.png" LogicalName="DebugDiag.DotNet.Resources.toc.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ui-bg_glass_65_ffffff_1x400.png" LogicalName="DebugDiag.DotNet.Resources.ui-bg_glass_65_ffffff_1x400.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ui-bg_glass_75_dadada_1x400.png" LogicalName="DebugDiag.DotNet.Resources.ui-bg_glass_75_dadada_1x400.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ui-bg_glass_75_e6e6e6_1x400.png" LogicalName="DebugDiag.DotNet.Resources.ui-bg_glass_75_e6e6e6_1x400.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.erroricon.png" LogicalName="DebugDiag.DotNet.Resources.erroricon.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.informationicon.png" LogicalName="DebugDiag.DotNet.Resources.informationicon.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.notificationicon.png" LogicalName="DebugDiag.DotNet.Resources.notificationicon.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.vkbicon.png" LogicalName="DebugDiag.DotNet.Resources.vkbicon.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.warningicon.png" LogicalName="DebugDiag.DotNet.Resources.warningicon.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.IISDiag-Analysis.png" LogicalName="DebugDiag.DotNet.Resources.IISDiag-Analysis.png" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.latest.woff" LogicalName="DebugDiag.DotNet.Resources.latest.woff" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.bulletpoint.gif" LogicalName="DebugDiag.DotNet.Resources.bulletpoint.gif" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.icon.average.gif" LogicalName="DebugDiag.DotNet.Resources.icon.average.gif" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.icon.minus.gif" LogicalName="DebugDiag.DotNet.Resources.icon.minus.gif" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.icon.plus.gif" LogicalName="DebugDiag.DotNet.Resources.icon.plus.gif" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.default.css" LogicalName="DebugDiag.DotNet.Resources.default.css" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.main.css" LogicalName="DebugDiag.DotNet.Resources.main.css" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ReportText1.htm" LogicalName="DebugDiag.DotNet.Resources.ReportText1.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ReportText2.htm" LogicalName="DebugDiag.DotNet.Resources.ReportText2.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ReportText3.htm" LogicalName="DebugDiag.DotNet.Resources.ReportText3.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ReportText4.htm" LogicalName="DebugDiag.DotNet.Resources.ReportText4.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.NewReportText1.htm" LogicalName="DebugDiag.DotNet.Resources.NewReportText1.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.NewReportText2.htm" LogicalName="DebugDiag.DotNet.Resources.NewReportText2.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.NewReportText3.htm" LogicalName="DebugDiag.DotNet.Resources.NewReportText3.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.NewReportText4.htm" LogicalName="DebugDiag.DotNet.Resources.NewReportText4.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.NewReportText5.htm" LogicalName="DebugDiag.DotNet.Resources.NewReportText5.htm" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.jquery-1.11.0.min.js" LogicalName="DebugDiag.DotNet.Resources.jquery-1.11.0.min.js" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.jquery-ui-1.10.4.custom.min.js" LogicalName="DebugDiag.DotNet.Resources.jquery-ui-1.10.4.custom.min.js" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ReportFunctions.js" LogicalName="DebugDiag.DotNet.Resources.ReportFunctions.js" />
+    <EmbeddedResource Include="DebugDiag.DotNet.Resources.ui.tabs.paging.js" LogicalName="DebugDiag.DotNet.Resources.ui.tabs.paging.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Diagnostics.Runtime">
+      <HintPath>Microsoft.Diagnostics.Runtime.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="ClrMemDiagExt">
+      <HintPath>C:\Program Files\DebugDiag\ClrMemDiagExt.dll</HintPath>
+    </Reference>
+    <Reference Include="MexFramework">
+      <HintPath>C:\Program Files\DebugDiag\MexFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Activities" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="WindowsBase" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+</Project>

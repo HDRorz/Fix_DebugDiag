@@ -1,0 +1,24 @@
+namespace DebugDiag.DbgEng;
+
+public enum DEBUG_STATUS : uint
+{
+	NO_CHANGE = 0u,
+	GO = 1u,
+	GO_HANDLED = 2u,
+	GO_NOT_HANDLED = 3u,
+	STEP_OVER = 4u,
+	STEP_INTO = 5u,
+	BREAK = 6u,
+	NO_DEBUGGEE = 7u,
+	STEP_BRANCH = 8u,
+	IGNORE_EVENT = 9u,
+	RESTART_REQUESTED = 10u,
+	REVERSE_GO = 11u,
+	REVERSE_STEP_BRANCH = 12u,
+	REVERSE_STEP_OVER = 13u,
+	REVERSE_STEP_INTO = 14u,
+	OUT_OF_SYNC = 15u,
+	WAIT_INPUT = 16u,
+	TIMEOUT = 17u,
+	MASK = 31u
+}

@@ -1,0 +1,46 @@
+using System.Runtime.InteropServices;
+
+namespace Microsoft.Diagnostics.Runtime.Linux;
+
+[StructLayout(LayoutKind.Sequential, Pack = 1)]
+internal struct ElfPRStatusArm : IElfPRStatus
+{
+	public ElfSignalInfo SignalInfo;
+
+	public short CurrentSignal;
+
+	private ushort Padding;
+
+	public uint SignalsPending;
+
+	public uint SignalsHeld;
+
+	public uint Pid;
+
+	public uint PPid;
+
+	public uint PGrp;
+
+	public uint Sid;
+
+	public TimeVal32 UserTime;
+
+	public TimeVal32 SystemTime;
+
+	public TimeVal32 CUserTime;
+
+	public TimeVal32 CSystemTime;
+
+	public RegSetArm RegisterSet;
+
+	public int FPValid;
+
+	public uint ProcessId => PGrp;
+
+	public uint ThreadId => Pid;
+
+	public unsafe bool CopyContext(uint contextFlags, uint contextSize, void* context)
+	{
+		return RegisterSet.CopyContext(contextFlags, contextSize, context);
+	}
+}

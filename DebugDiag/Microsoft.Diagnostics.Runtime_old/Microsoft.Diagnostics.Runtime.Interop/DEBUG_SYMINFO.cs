@@ -1,0 +1,9 @@
+namespace Microsoft.Diagnostics.Runtime.Interop;
+
+public enum DEBUG_SYMINFO : uint
+{
+	BREAKPOINT_SOURCE_LINE,
+	IMAGEHLP_MODULEW64,
+	GET_SYMBOL_NAME_BY_OFFSET_AND_TAG_WIDE,
+	GET_MODULE_SYMBOL_NAMES_AND_OFFSETS
+}

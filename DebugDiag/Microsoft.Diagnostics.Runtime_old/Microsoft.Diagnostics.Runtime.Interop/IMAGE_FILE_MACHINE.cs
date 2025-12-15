@@ -1,0 +1,35 @@
+namespace Microsoft.Diagnostics.Runtime.Interop;
+
+public enum IMAGE_FILE_MACHINE : uint
+{
+	UNKNOWN = 0u,
+	I386 = 332u,
+	R3000 = 354u,
+	R4000 = 358u,
+	R10000 = 360u,
+	WCEMIPSV2 = 361u,
+	ALPHA = 388u,
+	SH3 = 418u,
+	SH3DSP = 419u,
+	SH3E = 420u,
+	SH4 = 422u,
+	SH5 = 424u,
+	ARM = 448u,
+	THUMB = 450u,
+	THUMB2 = 452u,
+	AM33 = 467u,
+	POWERPC = 496u,
+	POWERPCFP = 497u,
+	IA64 = 512u,
+	MIPS16 = 614u,
+	ALPHA64 = 644u,
+	MIPSFPU = 870u,
+	MIPSFPU16 = 1126u,
+	AXP64 = 644u,
+	TRICORE = 1312u,
+	CEF = 3311u,
+	EBC = 3772u,
+	AMD64 = 34404u,
+	M32R = 36929u,
+	CEE = 49390u
+}

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
+<link rel=STYLESHEET type=text/css href=res/default.css title=default> <!-- DO NOT MODIFY THIS LINE WITHOUT ALSO MODIFYING AddTrackingUrlsToAnalysisReport() IN DEBUGDIAGUDE.EXE -->
+
+<script for=window event=onload language='JavaScript'>
+    // initially collapse all 'ToggleStartCollapsed' sections
+    for(i=0; i < document.anchors.length; i++)
+    {
+        var elem = document.anchors[i];
+        if (elem.className.toUpperCase() == "TOGGLESTARTCOLLAPSED")
+            doToggle2(elem);
+    }
+
+    // invoke any additional togglers
+    var togglers = (new VBArray(g_Togglers.Items())).toArray();
+    for (i in togglers)
+        window.execScript(togglers[i] + '();', 'JScript');
+</script>
+
+<script language="JavaScript">
+    var g_Togglers = new ActiveXObject("Scripting.Dictionary");
+
+    function AddToggler(togglerFunctionName) {
+        g_Togglers.Add(togglerFunctionName, togglerFunctionName);
+    }
+
+    function doToggle() {
+        var srcElement = window.event.srcElement;
+        doToggle2(srcElement);
+    }
+
+    function doToggle2(srcElement) {
+        doToggle3(srcElement, false);
+    }
+
+    function doToggle3(srcElement, expandOnly) {
+        var img, a, div, base
+
+        if (srcElement == null)
+            return;
+
+        if (srcElement.className.substr(0, 6).toUpperCase() == "TOGGLE") {
+            try {
+                base = srcElement.id.substr(0, srcElement.id.length - 1);
+                a = document.getElementById(base + "t");
+                img = document.getElementById(base + "i");
+                div = document.getElementById(base + "s");
+
+                if (div != null) {
+                    if (div.style.display == "none") {
+                        div.style.display = "block";
+                        if (img != null) {
+                            img.src = "res/up.png";
+                        }
+                    }
+                    else if (expandOnly == false) {
+                        div.style.display = "none";
+                        if (img != null) {
+                            img.src = "res/down.png";
+                        }
+                    }
+                }
+            }
+            catch (Ex) { }
+        }
+    }
+</script>
+</head>
+
+<!-- Begin Analysis Summary Section -->
+<body>
+<table border=0 cellpadding=0 cellspacing=0 class=myCustomContainer>
+<tr>
+<td valign=top width=50% style=padding-left:5px; padding-right:5px;>
+	<table border=0 cellpadding=2 cellspacing=2 class=myCustomTable>
+	<tr class=myCustomHeader>
+		<td>
+			<table border=0 cellpadding=2 cellspacing=0 bgcolor=#818181>
+			<tr>
+				<td><img id=Icon_Results src=res/bulletpoint.gif></td>
+			</tr>
+			</table>
+		</td>
+		<td width=100% style=padding-left:5px;> Analysis Summary </td>
+	</tr>
+	<tr id=Table_Results>
+		<td width=15 class=myCustomText>&nbsp;</td>
+		<td class=row>
+		<table cellpadding=5 border=1 class=myCustomTable>
+			<tr class=myCustomText>
+				<th>Type</th>
+				<th>Description</th>
+				<th>Recommendation</th>
+			</tr>

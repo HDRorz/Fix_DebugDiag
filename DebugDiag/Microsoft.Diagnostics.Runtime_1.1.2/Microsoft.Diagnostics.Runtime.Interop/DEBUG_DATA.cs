@@ -1,0 +1,11 @@
+namespace Microsoft.Diagnostics.Runtime.Interop;
+
+public enum DEBUG_DATA : uint
+{
+	KPCR_OFFSET,
+	KPRCB_OFFSET,
+	KTHREAD_OFFSET,
+	BASE_TRANSLATION_VIRTUAL_OFFSET,
+	PROCESSOR_IDENTIFICATION,
+	PROCESSOR_SPEED
+}

@@ -1,0 +1,13 @@
+namespace Microsoft.Diagnostics.Runtime.Interop;
+
+public enum DEBUG_SESSION : uint
+{
+	ACTIVE,
+	END_SESSION_ACTIVE_TERMINATE,
+	END_SESSION_ACTIVE_DETACH,
+	END_SESSION_PASSIVE,
+	END,
+	REBOOT,
+	HIBERNATE,
+	FAILURE
+}

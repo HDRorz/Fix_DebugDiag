@@ -1,0 +1,23 @@
+namespace Microsoft.Diagnostics.Runtime.Utilities;
+
+internal class MINIDUMP_THREAD_LIST<T> : MinidumpArray<T>, IMinidumpThreadList where T : MINIDUMP_THREAD
+{
+	internal MINIDUMP_THREAD_LIST(DumpPointer streamPointer, MINIDUMP_STREAM_TYPE streamType)
+		: base(streamPointer, streamType)
+	{
+		if (streamType != MINIDUMP_STREAM_TYPE.ThreadListStream && streamType != MINIDUMP_STREAM_TYPE.ThreadExListStream)
+		{
+			throw new ClrDiagnosticsException("Only ThreadListStream and ThreadExListStream are supported.", ClrDiagnosticsExceptionKind.CrashDumpError);
+		}
+	}
+
+	public new MINIDUMP_THREAD GetElement(uint idx)
+	{
+		return base.GetElement(idx);
+	}
+
+	public new uint Count()
+	{
+		return base.Count;
+	}
+}
