@@ -603,3 +603,5 @@ obj/
 # Additional files built by Visual Studio
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudio,visualstudiocode,dotnetcore,csharp
+DebugDiag/Microsoft.Diagnostics.Runtime_1.1.142101/
+新建文件夹/
