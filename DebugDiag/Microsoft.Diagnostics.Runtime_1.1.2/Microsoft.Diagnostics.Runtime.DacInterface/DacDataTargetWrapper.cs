@@ -8,7 +8,7 @@ using Microsoft.Diagnostics.Runtime.Utilities;
 
 namespace Microsoft.Diagnostics.Runtime.DacInterface;
 
-internal class DacDataTargetWrapper : COMCallableIUnknown, ICorDebugDataTarget
+internal unsafe class DacDataTargetWrapper : COMCallableIUnknown, ICorDebugDataTarget
 {
 	private unsafe delegate int GetMetadataDelegate(IntPtr self, [In][MarshalAs(UnmanagedType.LPWStr)] string filename, uint imageTimestamp, uint imageSize, IntPtr mvid, uint mdRva, uint flags, uint bufferSize, IntPtr buffer, int* dataSize);
 

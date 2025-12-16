@@ -31,14 +31,14 @@ internal class ElfCoreFile
 	{
 		ElfMachine architecture = ElfFile.Header.Architecture;
 		return from r in GetNotes(ElfNoteType.PrpsStatus)
-			select architecture switch
+			select (IElfPRStatus)(architecture switch
 			{
 				ElfMachine.EM_X86_64 => r.ReadContents<ElfPRStatusX64>(0L), 
 				ElfMachine.EM_ARM => r.ReadContents<ElfPRStatusArm>(0L), 
 				ElfMachine.EM_AARCH64 => r.ReadContents<ElfPRStatusArm64>(0L), 
 				ElfMachine.EM_386 => r.ReadContents<ElfPRStatusX86>(0L), 
 				_ => throw new NotSupportedException($"Invalid architecture {architecture}"), 
-			};
+			});
 	}
 
 	public ulong GetAuxvValue(ElfAuxvType type)

@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 namespace Microsoft.Diagnostics.Runtime.ICorDebug;
 
 [ComImport]
-[ClassInterface(0)]
+[ClassInterface(ClassInterfaceType.None)]
 [Guid("6fef44d0-39e7-4c77-be8e-c9f8cf988630")]
 public class CorDebugClass : ICorDebug, CorDebug
 {

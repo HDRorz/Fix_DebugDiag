@@ -6,7 +6,7 @@ namespace Microsoft.Diagnostics.Runtime.ICorDebug;
 
 [ComImport]
 [Guid("211F1254-BC7E-4AF5-B9AA-067308D83DD1")]
-[ClassInterface(0)]
+[ClassInterface(ClassInterfaceType.None)]
 public class EmbeddedCLRCorDebugClass : ICorDebug, EmbeddedCLRCorDebug
 {
 	[MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
