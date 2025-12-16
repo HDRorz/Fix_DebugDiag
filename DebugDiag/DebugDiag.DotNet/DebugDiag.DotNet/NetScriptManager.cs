@@ -927,7 +927,7 @@ public class NetScriptManager : IDisposable
 				}
 				if (current3.ClrInitException is ClrDiagnosticsException)
 				{
-					stringBuilder.AppendFormat("<br><b>HResult:  </b>{0}", Enum.GetName(typeof(ClrDiagnosticsException.HR), ((ClrDiagnosticsException)current3.ClrInitException).HResult));
+					stringBuilder.AppendFormat("<br><b>HResult:  </b>0x{0:X8}", ((ClrDiagnosticsException)current3.ClrInitException).HResult);
 					stringBuilder2.Append("This message means that the CLR Runtime is loaded but the ThreadStore or GC Heap information is not initialized.");
 				}
 			}

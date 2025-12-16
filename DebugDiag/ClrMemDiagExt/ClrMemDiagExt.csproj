@@ -11,7 +11,7 @@
   <PropertyGroup />
   <ItemGroup>
     <Reference Include="Microsoft.Diagnostics.Runtime">
-      <HintPath>Microsoft.Diagnostics.Runtime.dll</HintPath>
+      <HintPath>..\Microsoft.Diagnostics.Runtime_1.1.2\bin\Debug\net45\Microsoft.Diagnostics.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />

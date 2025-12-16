@@ -18,7 +18,7 @@ internal class MDRuntimeInfo : IMDRuntimeInfo
 
 	public void GetDacLocation(out string pLocation)
 	{
-		pLocation = m_info.TryGetDacLocation();
+		pLocation = m_info.LocalMatchingDac;
 	}
 
 	public void GetDacRequestData(out int pTimestamp, out int pFilesize)

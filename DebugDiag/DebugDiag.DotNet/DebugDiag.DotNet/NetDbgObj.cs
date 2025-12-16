@@ -19,7 +19,7 @@ using DebugDiag.DotNet.Kernel;
 using DebugDiag.DotNet.WinDE;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Diagnostics.Runtime.Interop;
-using Microsoft.Diagnostics.RuntimeExt;
+using ClrObject = Microsoft.Diagnostics.RuntimeExt.ClrObject;
 using Microsoft.Mex.DotNetDbg;
 using Microsoft.Mex.Framework;
 using Symbols;
@@ -1031,7 +1031,7 @@ public class NetDbgObj : IDisposable
 			}
 			yield break;
 		}
-		foreach (ulong item in ClrHeap.EnumerateObjects())
+		foreach (ulong item in ClrHeap.EnumerateObjectAddresses())
 		{
 			ClrType objectType = ClrHeap.GetObjectType(item);
 			if (objectType != null && (string.IsNullOrEmpty(typeName) || objectType.Name == typeName))
@@ -1163,7 +1163,7 @@ public class NetDbgObj : IDisposable
 		}
 		if (ClrRuntime != null && loadClrHeap)
 		{
-			ClrHeap = ClrRuntime.GetHeap();
+			ClrHeap = ClrRuntime.Heap;
 		}
 		if (ClrHeap == null && loadClrHeap)
 		{
@@ -1174,7 +1174,7 @@ public class NetDbgObj : IDisposable
 	private ClrRuntime CreateRuntime(string symbolPath, DataTarget target, int runtimeIndex, out ClrInfo clrInfo)
 	{
 		ClrInfo clrInfo2 = target.ClrVersions[runtimeIndex];
-		string text = clrInfo2.TryGetDacLocation();
+		string text = clrInfo2.LocalMatchingDac;
 		clrInfo = clrInfo2;
 		if (!string.IsNullOrEmpty(symbolPath) && !File.Exists(text))
 		{
@@ -1189,7 +1189,7 @@ public class NetDbgObj : IDisposable
 		if (File.Exists(text))
 		{
 			DacFileLocation = text;
-			ClrRuntime clrRuntime = target.CreateRuntime(text);
+			ClrRuntime clrRuntime = clrInfo.CreateRuntime(text);
 			if (clrRuntime != null && dacLibrary == null)
 			{
 				FieldInfo field = clrRuntime.GetType().BaseType.BaseType.GetField("_library", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.GetField);
@@ -1201,7 +1201,7 @@ public class NetDbgObj : IDisposable
 		}
 		if (File.Exists(text))
 		{
-			return target.CreateRuntime(text);
+			return clrInfo.CreateRuntime(text);
 		}
 		return null;
 	}

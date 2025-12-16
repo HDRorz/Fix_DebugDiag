@@ -54,7 +54,7 @@ internal class MDType : IMDType
 
 	public void GetArrayComponentType(out IMDType ppArrayComponentType)
 	{
-		ppArrayComponentType = Construct(m_type.ArrayComponentType);
+		ppArrayComponentType = Construct(m_type.ComponentType);
 	}
 
 	public void GetCCW(ulong addr, out IMDCCW ppCCW)
@@ -147,10 +147,10 @@ internal class MDType : IMDType
 			fields[i].corElementType = (int)clrInstanceField.ElementType;
 			if (clrInstanceField.ElementType == ClrElementType.Struct || clrInstanceField.ElementType == ClrElementType.String || clrInstanceField.ElementType == ClrElementType.Float || clrInstanceField.ElementType == ClrElementType.Double)
 			{
-				fields[i].value = clrInstanceField.GetFieldAddress(obj, interior != 0);
+				fields[i].value = clrInstanceField.GetAddress(obj, interior != 0);
 				continue;
 			}
-			object fieldValue = clrInstanceField.GetFieldValue(obj, interior != 0);
+			object fieldValue = clrInstanceField.GetValue(obj, interior != 0);
 			if (fieldValue == null)
 			{
 				fields[i].value = 0uL;
@@ -234,7 +234,7 @@ internal class MDType : IMDType
 	public void GetArrayElementValue(ulong objRef, int index, out IMDValue ppValue)
 	{
 		object arrayElementValue = m_type.GetArrayElementValue(objRef, index);
-		ClrElementType cet = ((m_type.ArrayComponentType != null) ? m_type.ArrayComponentType.ElementType : ClrElementType.Unknown);
+		ClrElementType cet = ((m_type.ComponentType != null) ? m_type.ComponentType.ElementType : ClrElementType.Unknown);
 		ppValue = new MDValue(arrayElementValue, cet);
 	}
 

@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="DebugDiag.Analysis.UserPreferencesControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:DebugDiag.Analysis" HorizontalAlignment="Stretch">
+  <Grid HorizontalAlignment="Stretch">
+    <AdornerDecorator>
+      <Grid HorizontalAlignment="Stretch" Row="1" Column="1">
+        <Grid Margin="5">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+          </Grid.RowDefinitions>
+          <GroupBox Grid.Row="2" Header="Preferences">
+            <Grid>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="10" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition />
+              </Grid.RowDefinitions>
+              <StackPanel Grid.Column="0">
+                <CheckBox Grid.Row="1" Margin="5" Content="Save reports in relative subfolders when possible." IsChecked="{Binding SaveReportsInRelativeSubFoldersWhenPossible}" />
+                <CheckBox Margin="5" Content="Include source and line information in analysis reports" IsChecked="{Binding IncludeSourceAndLineInformationInAnalysisReports}" />
+                <CheckBox Margin="5" Content="Include instruction pointers in analysis reports" IsChecked="{Binding IncludeInstructionPointerInAnalysisReports}" />
+                <CheckBox Margin="5" Content="For crash dumps, set the context to the exception of interest" IsChecked="{Binding SetContextOnCrashDumps}" />
+                <CheckBox Margin="5" Content="For crash dumps, run hang rules and crash rules" IsChecked="{Binding DoHangAnalysisOnCrashDumps}" />
+                <CheckBox Margin="5" Content="Group identical stacks together" IsChecked="{Binding ExcludeIdenticalStacks}" />
+              </StackPanel>
+              <GroupBox Grid.Column="2" Header="Visual KB" Visibility="{StaticResource InternalBuildFeatureVisibility}">
+                <StackPanel>
+                  <CheckBox Margin="5" IsChecked="{Binding VKBEnabled}">Enable VKB Search (usually fast)</CheckBox>
+                  <CheckBox Name="VKBSortCheckbox" Margin="5" Visibility="{StaticResource InternalBuildFeatureVisibility}" IsEnabled="{Binding VKBEnabled}" IsChecked="{Binding VKBSortEnabled}" AutomationProperties.LabeledBy="{Binding ElementName=VKBSortLabel}">
+                    <Label Name="VKBSortLabel" Padding="0" Content="Prioritize &amp; Sort VKB Results (usually slow)" IsEnabled="{Binding VKBEnabled}" Target="{Binding ElementName=VKBSortCheckbox}" />
+                  </CheckBox>
+                  <Grid Row="2" ColumnSpan="3" Margin="3">
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" />
+                      <ColumnDefinition Width="50" />
+                    </Grid.ColumnDefinitions>
+                    <Label Name="VKBMaxResultsLabel" Grid.Column="0" Visibility="{StaticResource InternalBuildFeatureVisibility}" IsEnabled="{Binding VKBEnabled}" Target="{Binding ElementName=VKBMaxResultsTextBox}">Maximum Number of Results:</Label>
+                    <TextBox Name="VKBMaxResultsTextBox" Grid.Column="1" MinWidth="50" Visibility="{StaticResource InternalBuildFeatureVisibility}" IsEnabled="{Binding VKBEnabled}" Text="{Binding VKBMaxResults}" AutomationProperties.LabeledBy="{Binding ElementName=VKBMaxResultsLabel}" />
+                  </Grid>
+                </StackPanel>
+              </GroupBox>
+              <Grid Row="2" ColumnSpan="3" Margin="3">
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="Auto" />
+                  <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <Label Name="ReportFileDirectoryOrFullPathLabel" Grid.Column="0" Visibility="{StaticResource InternalBuildFeatureVisibility}" Target="{Binding ElementName=ReportFileDirectoryOrFullPathTextBox}">Save Report Files to:</Label>
+                <TextBox Name="ReportFileDirectoryOrFullPathTextBox" Grid.Column="1" MinWidth="100" Visibility="{StaticResource InternalBuildFeatureVisibility}" AutomationProperties.LabeledBy="{Binding ElementName=ReportFileDirectoryOrFullPathLabel}">
+                  <TextBox.Text>
+                    <Binding Path="ReportFileDirectoryOrFullPath" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True" ValidatesOnExceptions="True">
+                      <Binding.ValidationRules>
+                        <local:FolderPathValidationRule />
+                      </Binding.ValidationRules>
+                    </Binding>
+                  </TextBox.Text>
+                </TextBox>
+                <Button Grid.Column="2" HorizontalAlignment="Right" Width="24" Visibility="{StaticResource InternalBuildFeatureVisibility}" ToolTip="Browse" AutomationProperties.Name="Browse" Click="SaveReportFilesFolderBrowseButton_Click">...</Button>
+              </Grid>
+            </Grid>
+          </GroupBox>
+          <GroupBox Grid.Row="4" Header="Symbol search paths to use for Analysis">
+            <local:PathListControl DataContext="{Binding SymbolPaths}">
+              <local:PathListControl.PathValidationRules>
+                <local:SymbolPathValidationRule />
+              </local:PathListControl.PathValidationRules>
+            </local:PathListControl>
+          </GroupBox>
+          <GroupBox Grid.Row="6" Header="Rule search paths to load rules from.">
+            <local:PathListControl DataContext="{Binding RulePaths}">
+              <local:PathListControl.PathValidationRules>
+                <local:FolderPathValidationRule />
+              </local:PathListControl.PathValidationRules>
+            </local:PathListControl>
+          </GroupBox>
+          <CheckBox Grid.Row="7" VerticalAlignment="Center" Margin="5" Visibility="{StaticResource InternalBuildFeatureVisibility}" Content="Join the Customer Experience Improvement Program" IsChecked="{Binding EnableUsageTracking}" />
+          <Button Grid.Row="7" Margin="5" Padding="5" HorizontalAlignment="Right" ToolTip="Reset Settings" Click="ResetButton_Click">
+            <StackPanel Orientation="Horizontal">
+              <Image Height="20" Source="{StaticResource ResetImage}" />
+              <TextBlock Margin="5,0" Text="Reset Settings to Defaults" />
+            </StackPanel>
+          </Button>
+        </Grid>
+      </Grid>
+    </AdornerDecorator>
+  </Grid>
+</UserControl>

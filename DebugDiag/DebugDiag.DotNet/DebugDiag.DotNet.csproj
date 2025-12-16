@@ -126,12 +126,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.Diagnostics.Runtime">
-      <HintPath>Microsoft.Diagnostics.Runtime.dll</HintPath>
+      <HintPath>..\Microsoft.Diagnostics.Runtime_1.1.2\bin\Debug\net45\Microsoft.Diagnostics.Runtime.dll</HintPath>
     </Reference>
     <Reference Include="System.Core" />
-    <Reference Include="ClrMemDiagExt">
-      <HintPath>C:\Program Files\DebugDiag\ClrMemDiagExt.dll</HintPath>
-    </Reference>
+    <ProjectReference Include="..\ClrMemDiagExt\ClrMemDiagExt.csproj" />
     <Reference Include="MexFramework">
       <HintPath>C:\Program Files\DebugDiag\MexFramework.dll</HintPath>
     </Reference>
@@ -141,5 +139,6 @@
     <Reference Include="WindowsBase" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Configuration" />
+    <Reference Include="System.Xaml" />
   </ItemGroup>
 </Project>

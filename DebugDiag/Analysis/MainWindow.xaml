@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Window x:Class="DebugDiag.Analysis.MainWindow" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:local="clr-namespace:DebugDiag.Analysis" Title="DebugDiag Analysis" Height="600" Width="1050" Icon="{StaticResource ApplicationIcon}">
+  <FrameworkElement.Resources>
+    <ResourceDictionary>
+      <DataTemplate x:Key="{DataTemplateKey {x:Type local:AnalysisVM}}" DataType="{x:Type local:AnalysisVM}">
+        <Grid>
+          <Grid.RowDefinitions>
+            <RowDefinition Height="40" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="50" />
+          </Grid.RowDefinitions>
+          <Grid>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.ColumnSpan="4" Stretch="Fill" Opacity="0.12">
+              <Shape.Fill>
+                <ImageBrush TileMode="Tile" Stretch="None" Viewport="0,0,600,40" ViewportUnits="Absolute" ImageSource="{StaticResource TitleBarBackground}" />
+              </Shape.Fill>
+            </Rectangle>
+            <Button Margin="5,0" ToolTip="Settings" Background="#00FFFFFF" BorderBrush="#00FFFFFF" Click="OptionsButton_Click">
+              <Image Source="{StaticResource SettingsImage}" Opacity="{StaticResource ButtonImageOpacity}" />
+            </Button>
+            <Button Grid.Column="1" FontWeight="Bold" FontSize="20" Margin="5,0" VerticalAlignment="Bottom" ToolTip="Open Reports Folder" Background="#00FFFFFF" BorderBrush="#00FFFFFF" Click="OpenReportFolderButton_Click">
+              <Image Source="{StaticResource OpenFoldersImage}" Opacity="{StaticResource ButtonImageOpacity}" />
+            </Button>
+            <TextBlock Grid.ColumnSpan="5" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" FontSize="20" Foreground="{DynamicResource TitleFontBrush}">DebugDiag Analysis</TextBlock>
+            <Button Grid.Column="4" ToolTip="Help" Background="#00FFFFFF" BorderBrush="#00FFFFFF" Click="HelpButton_Click">
+              <Image Source="{StaticResource HelpImage}" Opacity="{StaticResource ButtonImageOpacity}" />
+            </Button>
+          </Grid>
+          <local:AnalysisControl x:Name="analysisControl" Grid.Row="1" DataContext="{Binding}" />
+          <Grid Row="2">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition Width="40" />
+              <ColumnDefinition Width="Auto" />
+              <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" FontSize="16" Margin="5,0,5,5" ToolTip="Add Data Files" BorderBrush="#FFD3D3D3" Background="{StaticResource ButtonBackgroundBrush}" Visibility="{Binding AreAddStartButtonsVisible, ConverterParameter=true, Converter={StaticResource boolToVis}}" Command="{Binding AddDataFilesCommand}">
+              <StackPanel Orientation="Horizontal">
+                <FrameworkElement.Style>
+                  <Style TargetType="{x:Type StackPanel}">
+                    <Style.Triggers>
+                      <DataTrigger Value="false" Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                        <Setter Property="UIElement.Opacity" Value="0.3" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </FrameworkElement.Style>
+                <Image Margin="5" Source="{StaticResource AddDataFilesImage}" Opacity="{StaticResource ButtonImageOpacity}" />
+                <Label Margin="5" VerticalAlignment="Center" Content="_Add Data Files" Foreground="{StaticResource ActionFontBrush}" />
+              </StackPanel>
+            </Button>
+            <Button Grid.Column="3" FontSize="16" Margin="5,0,5,5" ToolTip="Start Analysis" BorderBrush="#FFD3D3D3" Background="{StaticResource ButtonBackgroundBrush}" Visibility="{Binding AreAddStartButtonsVisible, ConverterParameter=true, Converter={StaticResource boolToVis}}" Command="{Binding StartCommand}">
+              <StackPanel Orientation="Horizontal">
+                <FrameworkElement.Style>
+                  <Style TargetType="{x:Type StackPanel}">
+                    <Style.Triggers>
+                      <DataTrigger Value="false" Binding="{Binding Path=IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Button}}}">
+                        <Setter Property="UIElement.Opacity" Value="0.3" />
+                      </DataTrigger>
+                    </Style.Triggers>
+                  </Style>
+                </FrameworkElement.Style>
+                <Image Margin="5" Source="{StaticResource StartAnalysisImage}" Opacity="{StaticResource ButtonImageOpacity}" />
+                <Label Margin="5" VerticalAlignment="Center" Content="_Start Analysis" Foreground="{StaticResource ActionFontBrush}" />
+              </StackPanel>
+            </Button>
+          </Grid>
+        </Grid>
+      </DataTemplate>
+      <DataTemplate x:Key="{DataTemplateKey {x:Type local:SettingsPagesVM}}" DataType="{x:Type local:SettingsPagesVM}">
+        <local:SettingPagesControl Closed="SettingsPagesClosed" />
+      </DataTemplate>
+      <DataTemplate x:Key="{DataTemplateKey {x:Type local:ProgressVM}}" DataType="{x:Type local:ProgressVM}">
+        <Grid Name="ProgControl" VerticalAlignment="Stretch" Background="#FFFFFFFF" Height="{Binding ElementName=ContentRoot, Path=ActualHeight}" Loaded="ProgControl_Loaded">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+          </Grid.RowDefinitions>
+          <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" TextAlignment="Center" FontWeight="Bold" FontSize="22" Text="Running Analysis" Foreground="{StaticResource PrimaryDataFontBrush}" />
+          <local:ProgressControl Grid.Row="1" VerticalAlignment="Center" DataContext="{Binding}" />
+          <Button Grid.Row="2" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="10" IsEnabled="False">_Cancel</Button>
+        </Grid>
+      </DataTemplate>
+      <local:MainWindowVM x:Key="MainWindowVM" />
+    </ResourceDictionary>
+  </FrameworkElement.Resources>
+  <ContentControl Name="ContentRoot" DataContext="{StaticResource MainWindowVM}" Content="{Binding CurrentVM}" />
+</Window>

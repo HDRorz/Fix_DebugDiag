@@ -44,12 +44,12 @@ internal class MDSegment : IMDSegment
 
 	public void IsLarge(out int pLarge)
 	{
-		pLarge = (m_seg.Large ? 1 : 0);
+		pLarge = (m_seg.IsLarge ? 1 : 0);
 	}
 
 	public void IsEphemeral(out int pEphemeral)
 	{
-		pEphemeral = (m_seg.Ephemeral ? 1 : 0);
+		pEphemeral = (m_seg.IsEphemeral ? 1 : 0);
 	}
 
 	public void GetGen0Info(out ulong pStart, out ulong pLen)

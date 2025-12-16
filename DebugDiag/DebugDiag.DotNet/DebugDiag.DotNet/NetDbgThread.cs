@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using DebugDiag.DbgEng;
 using DebugDiag.DbgLib;
 using Microsoft.Diagnostics.Runtime;
-using Microsoft.Diagnostics.RuntimeExt;
+using ClrObject = Microsoft.Diagnostics.RuntimeExt.ClrObject;
 
 namespace DebugDiag.DotNet;
 

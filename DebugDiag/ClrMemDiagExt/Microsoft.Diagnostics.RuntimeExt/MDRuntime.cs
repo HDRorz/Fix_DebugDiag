@@ -50,7 +50,7 @@ internal class MDRuntime : IMDRuntime
 
 	public void GetHeap(out IMDHeap ppHeap)
 	{
-		ppHeap = new MDHeap(m_runtime.GetHeap());
+		ppHeap = new MDHeap(m_runtime.Heap);
 	}
 
 	public void EnumerateAppDomains(out IMDAppDomainEnum ppEnum)
@@ -65,7 +65,7 @@ internal class MDRuntime : IMDRuntime
 
 	public void EnumerateFinalizerQueue(out IMDObjectEnum ppEnum)
 	{
-		ppEnum = new MDObjectEnum(new List<ulong>(m_runtime.EnumerateFinalizerQueue()));
+		ppEnum = new MDObjectEnum(new List<ulong>(m_runtime.EnumerateFinalizerQueueObjectAddresses()));
 	}
 
 	public void EnumerateGCHandles(out IMDHandleEnum ppEnum)

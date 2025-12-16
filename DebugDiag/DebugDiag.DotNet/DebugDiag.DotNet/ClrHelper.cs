@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using Microsoft.Diagnostics.Runtime;
+using ClrObject = Microsoft.Diagnostics.RuntimeExt.ClrObject;
 using Microsoft.Diagnostics.RuntimeExt;
 
 namespace DebugDiag.DotNet;
@@ -37,9 +38,9 @@ public static class ClrHelper
 		ClrType heapType = obj.GetHeapType();
 		if (field != null)
 		{
-			if (!field.IsObjectReference())
+			if (!field.IsObjectReference)
 			{
-				if (field.IsPrimitive())
+				if (field.IsPrimitive)
 				{
 					return new ClrPrimitiveValue(field.GetValue(obj.GetValue()), field.ElementType);
 				}
@@ -49,7 +50,7 @@ public static class ClrHelper
 			ulong value = field.GetAddress(obj.GetValue());
 			if (value != 0L)
 			{
-				heapType.Heap.GetRuntime().ReadPointer(value, out value);
+				heapType.Heap.Runtime.ReadPointer(value, out value);
 				if (value != 0L)
 				{
 					return heapType.Heap.GetDynamicObject(value);

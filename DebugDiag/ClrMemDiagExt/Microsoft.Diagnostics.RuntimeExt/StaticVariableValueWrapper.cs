@@ -17,17 +17,17 @@ public class StaticVariableValueWrapper : DynamicObject
 
 	public dynamic GetValue(ClrAppDomain appDomain)
 	{
-		if (m_field.IsPrimitive())
+		if (m_field.IsPrimitive)
 		{
-			object fieldValue = m_field.GetFieldValue(appDomain);
+			object fieldValue = m_field.GetValue(appDomain);
 			if (fieldValue != null)
 			{
 				return new ClrPrimitiveValue(fieldValue, m_field.ElementType);
 			}
 		}
-		else if (m_field.IsValueClass())
+		else if (m_field.IsValueClass)
 		{
-			ulong fieldAddress = m_field.GetFieldAddress(appDomain);
+			ulong fieldAddress = m_field.GetAddress(appDomain);
 			if (fieldAddress != 0L)
 			{
 				return new ClrObject(m_heap, m_field.Type, fieldAddress, inner: true);
@@ -35,15 +35,15 @@ public class StaticVariableValueWrapper : DynamicObject
 		}
 		else if (m_field.ElementType == ClrElementType.String)
 		{
-			ulong value = m_field.GetFieldAddress(appDomain);
-			if (m_heap.GetRuntime().ReadPointer(value, out value))
+			ulong value = m_field.GetAddress(appDomain);
+			if (m_heap.Runtime.ReadPointer(value, out value))
 			{
 				return new ClrObject(m_heap, m_field.Type, value);
 			}
 		}
 		else
 		{
-			object fieldValue2 = m_field.GetFieldValue(appDomain);
+			object fieldValue2 = m_field.GetValue(appDomain);
 			if (fieldValue2 != null)
 			{
 				return new ClrObject(m_heap, m_field.Type, (ulong)fieldValue2);

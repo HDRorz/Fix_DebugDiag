@@ -100,7 +100,7 @@ public class ClrObject : DynamicObject
 				throw new ArgumentException("Only one index is allowed for Dictionary indexing.");
 			}
 			dynamic val = ((dynamic)this).entries;
-			ClrType type = ((ClrType)val).ArrayComponentType.GetFieldByName("key").Type;
+			ClrType type = ((ClrType)val).ComponentType.GetFieldByName("key").Type;
 			if (type.IsObjectReference)
 			{
 				if (indexes[0].GetType() == typeof(string))
@@ -152,17 +152,17 @@ public class ClrObject : DynamicObject
 		{
 			int indexFromObjects2 = GetIndexFromObjects(indexes);
 			ClrInstanceField fieldByName = m_type.GetFieldByName("_items");
-			ulong num5 = (ulong)fieldByName.GetFieldValue(m_addr);
+			ulong num5 = (ulong)fieldByName.GetValue(m_addr);
 			if (m_len == -1)
 			{
 				ClrInstanceField fieldByName2 = m_type.GetFieldByName("_size");
-				m_len = (int)fieldByName2.GetFieldValue(m_addr);
+				m_len = (int)fieldByName2.GetValue(m_addr);
 			}
 			ClrType clrType = fieldByName.Type;
-			if (clrType == null || clrType.ArrayComponentType == null)
+			if (clrType == null || clrType.ComponentType == null)
 			{
 				clrType = m_heap.GetObjectType(num5);
-				if (clrType == null || clrType.ArrayComponentType == null)
+				if (clrType == null || clrType.ComponentType == null)
 				{
 					result = new ClrNullValue(m_heap);
 					return true;
@@ -193,7 +193,7 @@ public class ClrObject : DynamicObject
 
 	private bool GetArrayValue(ClrType type, ulong addr, int index, out object result)
 	{
-		ClrType arrayComponentType = type.ArrayComponentType;
+		ClrType arrayComponentType = type.ComponentType;
 		if (addr == 0L || arrayComponentType == null)
 		{
 			result = new ClrNullValue(m_heap);
@@ -212,7 +212,7 @@ public class ClrObject : DynamicObject
 		if (arrayComponentType.IsObjectReference)
 		{
 			addr = type.GetArrayElementAddress(addr, index);
-			if (!m_heap.GetRuntime().ReadPointer(addr, out addr) || addr == 0L)
+			if (!m_heap.Runtime.ReadPointer(addr, out addr) || addr == 0L)
 			{
 				result = new ClrNullValue(m_heap);
 				return true;
@@ -316,13 +316,13 @@ public class ClrObject : DynamicObject
 		if (IsDictionary())
 		{
 			ClrInstanceField fieldByName = m_type.GetFieldByName("count");
-			m_len = (int)fieldByName.GetFieldValue(m_addr);
+			m_len = (int)fieldByName.GetValue(m_addr);
 			return m_len;
 		}
 		if (IsList())
 		{
 			ClrInstanceField fieldByName2 = m_type.GetFieldByName("_size");
-			m_len = (int)fieldByName2.GetFieldValue(m_addr);
+			m_len = (int)fieldByName2.GetValue(m_addr);
 			return m_len;
 		}
 		throw new InvalidOperationException("Object does not have a length associated with it.");
@@ -331,13 +331,13 @@ public class ClrObject : DynamicObject
 	public ClrType GetDictionaryKeyType()
 	{
 		dynamic val = ((dynamic)this).entries;
-		return ((ClrType)val).ArrayComponentType.GetFieldByName("key")?.Type;
+		return ((ClrType)val).ComponentType.GetFieldByName("key")?.Type;
 	}
 
 	public ClrType GetDictionaryValueType()
 	{
 		dynamic val = ((dynamic)this).entries;
-		return ((ClrType)val).ArrayComponentType.GetFieldByName("value")?.Type;
+		return ((ClrType)val).ComponentType.GetFieldByName("value")?.Type;
 	}
 
 	public IList<Tuple<dynamic, dynamic>> GetDictionaryItems()
@@ -391,9 +391,9 @@ public class ClrObject : DynamicObject
 			}
 			throw new InvalidOperationException($"Type '{m_type.Name}' does not contain a '{binder.Name}' field.");
 		}
-		if (clrInstanceField.IsPrimitive())
+		if (clrInstanceField.IsPrimitive)
 		{
-			object fieldValue = clrInstanceField.GetFieldValue(m_addr, m_inner);
+			object fieldValue = clrInstanceField.GetValue(m_addr, m_inner);
 			if (fieldValue == null)
 			{
 				result = new ClrNullValue(m_heap);
@@ -404,16 +404,16 @@ public class ClrObject : DynamicObject
 			}
 			return true;
 		}
-		if (clrInstanceField.IsValueClass())
+		if (clrInstanceField.IsValueClass)
 		{
-			ulong fieldAddress = clrInstanceField.GetFieldAddress(m_addr, m_inner);
+			ulong fieldAddress = clrInstanceField.GetAddress(m_addr, m_inner);
 			result = new ClrObject(m_heap, clrInstanceField.Type, fieldAddress, inner: true);
 			return true;
 		}
 		if (clrInstanceField.ElementType == ClrElementType.String)
 		{
-			ulong value = clrInstanceField.GetFieldAddress(m_addr, m_inner);
-			if (!m_heap.GetRuntime().ReadPointer(value, out value))
+			ulong value = clrInstanceField.GetAddress(m_addr, m_inner);
+			if (!m_heap.Runtime.ReadPointer(value, out value))
 			{
 				result = new ClrNullValue(m_heap);
 				return true;
@@ -421,7 +421,7 @@ public class ClrObject : DynamicObject
 			result = new ClrObject(m_heap, clrInstanceField.Type, value);
 			return true;
 		}
-		object fieldValue2 = clrInstanceField.GetFieldValue(m_addr, m_inner);
+		object fieldValue2 = clrInstanceField.GetValue(m_addr, m_inner);
 		if (fieldValue2 == null)
 		{
 			result = new ClrNullValue(m_heap);

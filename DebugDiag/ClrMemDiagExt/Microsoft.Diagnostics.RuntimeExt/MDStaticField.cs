@@ -33,13 +33,13 @@ internal class MDStaticField : IMDStaticField
 
 	public void GetFieldValue(IMDAppDomain appDomain, out IMDValue ppValue)
 	{
-		object fieldValue = m_field.GetFieldValue((ClrAppDomain)appDomain);
+		object fieldValue = m_field.GetValue((ClrAppDomain)appDomain);
 		ppValue = new MDValue(fieldValue, m_field.ElementType);
 	}
 
 	public void GetFieldAddress(IMDAppDomain appDomain, out ulong pAddress)
 	{
-		ulong fieldAddress = m_field.GetFieldAddress((ClrAppDomain)appDomain);
+		ulong fieldAddress = m_field.GetAddress((ClrAppDomain)appDomain);
 		pAddress = fieldAddress;
 	}
 }

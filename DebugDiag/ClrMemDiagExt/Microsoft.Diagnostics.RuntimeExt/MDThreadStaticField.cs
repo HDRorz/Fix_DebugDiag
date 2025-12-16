@@ -33,12 +33,12 @@ internal class MDThreadStaticField : IMDThreadStaticField
 
 	public void GetFieldValue(IMDAppDomain appDomain, IMDThread thread, out IMDValue ppValue)
 	{
-		object fieldValue = m_field.GetFieldValue((ClrAppDomain)appDomain, (ClrThread)thread);
+		object fieldValue = m_field.GetValue((ClrAppDomain)appDomain, (ClrThread)thread);
 		ppValue = new MDValue(fieldValue, m_field.ElementType);
 	}
 
 	public void GetFieldAddress(IMDAppDomain appDomain, IMDThread thread, out ulong pAddress)
 	{
-		pAddress = m_field.GetFieldAddress((ClrAppDomain)appDomain, (ClrThread)thread);
+		pAddress = m_field.GetAddress((ClrAppDomain)appDomain, (ClrThread)thread);
 	}
 }

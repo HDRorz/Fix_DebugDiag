@@ -34,11 +34,13 @@ internal class MDTarget : IMDTarget
 
 	public void CreateRuntimeFromDac(string dacLocation, out IMDRuntime ppRuntime)
 	{
-		ppRuntime = new MDRuntime(m_target.CreateRuntime(dacLocation));
+		var clrInfo = m_target.ClrVersions[0]; // Use first available CLR version
+		ppRuntime = new MDRuntime(clrInfo.CreateRuntime(dacLocation));
 	}
 
 	public void CreateRuntimeFromIXCLR(object ixCLRProcess, out IMDRuntime ppRuntime)
 	{
-		ppRuntime = new MDRuntime(m_target.CreateRuntime(ixCLRProcess));
+		var clrInfo = m_target.ClrVersions[0]; // Use first available CLR version
+		ppRuntime = new MDRuntime(clrInfo.CreateRuntime(ixCLRProcess));
 	}
 }

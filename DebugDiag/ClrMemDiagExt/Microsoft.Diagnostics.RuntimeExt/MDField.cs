@@ -38,12 +38,12 @@ internal class MDField : IMDField
 
 	public void GetFieldValue(ulong objRef, int interior, out IMDValue ppValue)
 	{
-		object fieldValue = m_field.GetFieldValue(objRef, interior != 0);
+		object fieldValue = m_field.GetValue(objRef, interior != 0);
 		ppValue = new MDValue(fieldValue, m_field.ElementType);
 	}
 
 	public void GetFieldAddress(ulong objRef, int interior, out ulong pAddress)
 	{
-		pAddress = m_field.GetFieldAddress(objRef, interior != 0);
+		pAddress = m_field.GetAddress(objRef, interior != 0);
 	}
 }

@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<UserControl x:Class="DebugDiag.Analysis.ProgressControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" MinHeight="100">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="*" />
+      <RowDefinition Height="Auto" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <TextBlock Text="{Binding CurrentStatus}" />
+    <ProgressBar Grid.Row="1" Value="{Binding CurrentPosition, Mode=OneWay}" Minimum="{Binding CurrentMin}" Maximum="{Binding CurrentMax}" />
+    <ProgressBar Grid.Row="2" IsIndeterminate="True" />
+    <TextBlock Grid.Row="3" Text="{Binding OverallStatus}" />
+    <ProgressBar Grid.Row="4" Value="{Binding OverallPosition, Mode=OneWay}" Minimum="{Binding OverallMin}" Maximum="{Binding OverallMax}" />
+    <ProgressBar Grid.Row="5" IsIndeterminate="True" />
+    <TextBlock Grid.Row="6" Text="{Binding DebuggerStatus}" />
+  </Grid>
+</UserControl>

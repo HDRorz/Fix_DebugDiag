@@ -20,7 +20,7 @@ internal class MDHandle : IMDHandle
 
 	public void IsStrong(out int pStrong)
 	{
-		pStrong = (m_handle.Strong ? 1 : 0);
+		pStrong = (m_handle.IsStrong ? 1 : 0);
 	}
 
 	public void GetRefCount(out int pRefCount)
