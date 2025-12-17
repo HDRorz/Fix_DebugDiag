@@ -11,6 +11,7 @@ using DebugDiag.DotNet;
 using DebugDiag.DotNet.Reports;
 using Microsoft.Diagnostics.Runtime;
 using Microsoft.Diagnostics.Runtime.Interop;
+using ClrObject = Microsoft.Diagnostics.RuntimeExt.ClrObject;
 using Microsoft.Diagnostics.RuntimeExt;
 using Microsoft.VisualBasic;
 
@@ -205,13 +206,13 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 				COMApartmentType cOMApartmentType = threadByManagedThreadId.COMApartmentType;
 				switch (cOMApartmentType - 1)
 				{
-				case 2:
+				case (COMApartmentType)2:
 					text = "STA";
 					break;
-				case 1:
+				case (COMApartmentType)1:
 					text = "MTA";
 					break;
-				case 0:
+				case (COMApartmentType)0:
 					text = "Neutral";
 					break;
 				default:
@@ -800,7 +801,7 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 		ulong num2 = 0uL;
 		ulong num3 = 0uL;
 		uint seconds = 0u;
-		((IDebugControl2)Globals.g_Debugger.RawDebugger).GetCurrentTimeDate(ref seconds);
+		((IDebugControl2)Globals.g_Debugger.RawDebugger).GetCurrentTimeDate(out seconds);
 		DateTime dateTime = ConvertUnixTime(seconds);
 		if (boolHeader)
 		{
@@ -876,7 +877,7 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 		ClrInstanceField fieldByName = ((ClrType)objectAt.GetHeapType()).GetFieldByName("_finishPipelineRequestCalled");
 		if (fieldByName != null)
 		{
-			flag = (bool)fieldByName.GetFieldValue(objectAt.GetValue());
+			flag = (bool)fieldByName.GetValue(objectAt.GetValue());
 		}
 		if (!flag)
 		{
@@ -1129,7 +1130,7 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 			{
 				if (((ClrField)staticField).Name == variable)
 				{
-					object fieldValue = staticField.GetFieldValue(appDomain);
+					object fieldValue = staticField.GetValue(appDomain);
 					if (fieldValue is bool && (bool)fieldValue)
 					{
 						return true;
@@ -1524,7 +1525,7 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 		{
 			return result;
 		}
-		Globals.g_clrModule.GetProductVersion(ref obj, ref obj2, ref obj3, ref obj4);
+		Globals.g_clrModule.GetProductVersion(out obj, out obj2, out obj3, out obj4);
 		if ((int)obj4 < (int)versionNumber)
 		{
 			return true;
@@ -1856,12 +1857,12 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 			{
 				return null;
 			}
-			if (((ClrField)fieldByName).IsValueClass())
+			if (((ClrField)fieldByName).IsValueClass)
 			{
-				ulong fieldAddress = fieldByName.GetFieldAddress(obj.GetValue(), false);
+				ulong fieldAddress = fieldByName.GetAddress(obj.GetValue(), false);
 				return (object)new ClrObject(heapType.Heap, ((ClrField)fieldByName).Type, fieldAddress, true);
 			}
-			return fieldByName.GetFieldValue(obj.GetValue());
+			return fieldByName.GetValue(obj.GetValue());
 		}
 		catch (Exception)
 		{
@@ -3577,10 +3578,10 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 			if (val != null && !(val is ClrNullValue))
 			{
 				ClrInstanceField fieldByName = ((ClrType)val.GetHeapType()).GetFieldByName(fieldName);
-				ulong num = fieldByName.GetFieldAddress(val.GetValue(), false);
-				if (Globals.g_Debugger.ClrRuntime.ReadPointer(num, ref num))
+				ulong num = fieldByName.GetAddress(val.GetValue(), false);
+				if (Globals.g_Debugger.ClrRuntime.ReadPointer(num, out ulong value))
 				{
-					list.Add(num.ToString("x"));
+					list.Add(value.ToString("x"));
 				}
 			}
 		}
@@ -3596,7 +3597,7 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 		object obj4 = 0;
 		object obj5 = 0;
 		int num = 0;
-		foreach (ClrModule item in Globals.g_Debugger.ClrRuntime.EnumerateModules())
+		foreach (ClrModule item in Globals.g_Debugger.ClrRuntime.Modules)
 		{
 			if (item.DebuggingMode.HasFlag(DebuggableAttribute.DebuggingModes.DisableOptimizations) && (item.DebuggingMode - 256).CompareTo(DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints) > 0)
 			{
@@ -3604,7 +3605,7 @@ internal class AnalyzeManagedImpl : IAnalyzeManaged
 				if (moduleByAddress != null && moduleByAddress.VSCompanyName.IndexOf("Microsoft Corporation") == -1)
 				{
 					num++;
-					moduleByAddress.GetFileVersion(ref obj2, ref obj3, ref obj4, ref obj5);
+					moduleByAddress.GetFileVersion(out obj2, out obj3, out obj4, out obj5);
 					obj = regexReplace(moduleByAddress.TimeStamp, "(([0-1][0-9])|([2][0-3])):([0-5][0-9]):([0-5][0-9])|^(Sun|Mon|Tue|Thu|Fri|Sat|Wed)", "");
 					text = text + "<tr><td align='left' title='" + Convert.ToString(moduleByAddress.ImageName) + "\n'>" + moduleByAddress.ModuleName + "</td><td align='right'> " + Convert.ToString(obj2) + "." + Convert.ToString(obj3) + "." + Convert.ToString(obj4) + "." + Convert.ToString(obj5) + "</td><td align='right'>" + Convert.ToString(obj) + "</td><td align='right'>" + Convert.ToString(moduleByAddress.VSCompanyName) + "</td></tr>";
 				}

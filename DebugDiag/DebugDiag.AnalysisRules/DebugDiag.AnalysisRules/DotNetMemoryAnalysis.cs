@@ -10,6 +10,7 @@ using DebugDiag.DotNet.HtmlHelpers;
 using DebugDiag.DotNet.Reports;
 using DebugDiag.DotNet.Util;
 using Microsoft.Diagnostics.Runtime;
+using ClrObject = Microsoft.Diagnostics.RuntimeExt.ClrObject;
 using Microsoft.Diagnostics.RuntimeExt;
 
 namespace DebugDiag.AnalysisRules;
@@ -40,8 +41,8 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 			{
 				throw new ArgumentException("objAddress cannot be 0x00");
 			}
-			ClrHeap heap = clr.GetHeap();
-			ClrType objectTypeSafe = ExtensionMethods.GetObjectTypeSafe(heap, objAddress);
+			ClrHeap heap = clr.Heap;
+			ClrType objectTypeSafe = heap.GetObjectTypeSafe(objAddress);
 			if (objectTypeSafe == null)
 			{
 				throw new InvalidOperationException("Specified address is not a managed object.");
@@ -108,13 +109,13 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 
 		private ulong Align(ulong size)
 		{
-			ulong num = AlignConst(Type.Heap.GetSegmentByAddress(Address).Large);
+			ulong num = AlignConst(Type.Heap.GetSegmentByAddress(Address).IsLarge);
 			return (size + num) & ~num;
 		}
 
 		private ulong AlignConst(bool loh)
 		{
-			if (Type.Heap.GetRuntime().PointerSize == 4 && !loh)
+			if (Type.Heap.Runtime.PointerSize == 4 && !loh)
 			{
 				return 3uL;
 			}
@@ -128,18 +129,18 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 
 		public bool ElemIsPrimitive()
 		{
-			if (Type.ArrayComponentType != null)
+			if (Type.ComponentType != null)
 			{
-				return Type.ArrayComponentType.IsPrimitive;
+				return Type.ComponentType.IsPrimitive;
 			}
 			return false;
 		}
 
 		private ClrType FindArrayComponentType(ClrHeap heap)
 		{
-			if (Type.ArrayComponentType != null)
+			if (Type.ComponentType != null)
 			{
-				return Type.ArrayComponentType;
+				return Type.ComponentType;
 			}
 			string utypeName = Type.Name.Substring(0, Type.Name.Length);
 			if (utypeName.EndsWith("[]"))
@@ -177,7 +178,7 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 				else if (val.IsValueClass && val.ContainsPointers)
 				{
 					ulong arrayElementAddress = Type.GetArrayElementAddress(Address, i);
-					queue.Enqueue(new ObjRef(arrayElementAddress, Type.ArrayComponentType, interior: true));
+					queue.Enqueue(new ObjRef(arrayElementAddress, Type.ComponentType, interior: true));
 				}
 			}
 		}
@@ -191,11 +192,11 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 			for (int i = 0; i < Type.Fields.Count; i++)
 			{
 				ClrInstanceField val = Type.Fields[i];
-				if (((ClrField)val).IsObjectReference())
+				if (((ClrField)val).IsObjectReference)
 				{
 					Enqueue(Dereference(val.GetAddress(Address, Interior), heap), heap, null, queue, seenObjs);
 				}
-				else if (((ClrField)val).IsValueClass() && ((ClrField)val).Type != null && ((ClrField)val).Type.ContainsPointers)
+				else if (((ClrField)val).IsValueClass && ((ClrField)val).Type != null && ((ClrField)val).Type.ContainsPointers)
 				{
 					ulong address = val.GetAddress(Address, Interior);
 					new ObjRef(address, ((ClrField)val).Type, interior: true).GetFieldReferences(heap, queue, seenObjs);
@@ -222,7 +223,7 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 				ClrType val = ((possibleType != null && possibleType.IsSealed) ? possibleType : null);
 				if (val == null)
 				{
-					val = ExtensionMethods.GetObjectTypeSafe(heap, addr);
+					val = heap.GetObjectTypeSafe(addr);
 				}
 				if (val == null)
 				{
@@ -234,9 +235,9 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 
 		private static ulong Dereference(ulong addr, ClrHeap heap)
 		{
-			if (heap.GetRuntime().ReadPointer(addr, ref addr))
+			if (heap.Runtime.ReadPointer(addr, out ulong value))
 			{
-				return addr;
+				return value;
 			}
 			return 0uL;
 		}
@@ -327,7 +328,7 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 				return rootChainsByRootedType;
 			}
 			allObjects.Add(num);
-			ClrType objectTypeSafe = ExtensionMethods.GetObjectTypeSafe(heap, num);
+			ClrType objectTypeSafe = heap.GetObjectTypeSafe(num);
 			if (objectTypeSafe != null)
 			{
 				string name = objectTypeSafe.Name;
@@ -637,7 +638,7 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 			get
 			{
 				ulong num = references.Peek();
-				ClrType objectTypeSafe = ExtensionMethods.GetObjectTypeSafe(heap, num);
+				ClrType objectTypeSafe = heap.GetObjectTypeSafe(num);
 				if (objectTypeSafe == null)
 				{
 					return 0uL;
@@ -678,7 +679,7 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 			references.Push(root.Address);
 			references.Push(root.Object);
 			chainKey = root.Name;
-			ClrType objectTypeSafe = ExtensionMethods.GetObjectTypeSafe(heap, root.Object);
+			ClrType objectTypeSafe = heap.GetObjectTypeSafe(root.Object);
 			if (objectTypeSafe != null)
 			{
 				chainKey = chainKey + "|" + objectTypeSafe.Name;
@@ -688,7 +689,7 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 		public void Push(ulong address, ClrHeap heap)
 		{
 			references.Push(address);
-			ClrType objectTypeSafe = ExtensionMethods.GetObjectTypeSafe(heap, address);
+			ClrType objectTypeSafe = heap.GetObjectTypeSafe(address);
 			if (objectTypeSafe != null)
 			{
 				chainKey = chainKey + "|" + objectTypeSafe.Name;
@@ -1093,14 +1094,14 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 		string text;
 		if (liveObjects)
 		{
-			source = ((Globals.g_Debugger.ClrVersionInfo.Version.Major < 4) ? Globals.g_Debugger.ClrHeap.EnumerateFinalizableObjects() : Globals.g_Debugger.ClrRuntime.EnumerateFinalizerQueue());
+			source = ((Globals.g_Debugger.ClrVersionInfo.Version.Major < 4) ? Globals.g_Debugger.ClrHeap.EnumerateFinalizableObjectAddresses() : Globals.g_Debugger.ClrRuntime.EnumerateFinalizerQueue());
 			val = Globals.Manager.CurrentSection.AddChildSection("FINALIZABLE", (SectionType)0);
 			val.Title = "Top Finalizable Objects on the heap (live objects)";
 			text = "There are no live finalizable objects";
 		}
 		else
 		{
-			source = ((Globals.g_Debugger.ClrVersionInfo.Version.Major < 4) ? Globals.g_Debugger.ClrRuntime.EnumerateFinalizerQueue() : Globals.g_Debugger.ClrHeap.EnumerateFinalizableObjects());
+			source = ((Globals.g_Debugger.ClrVersionInfo.Version.Major < 4) ? Globals.g_Debugger.ClrRuntime.EnumerateFinalizerQueue() : Globals.g_Debugger.ClrHeap.EnumerateFinalizableObjectAddresses());
 			val = Globals.Manager.CurrentSection.AddChildSection("FINALIZEQUEUE", (SectionType)0);
 			val.Title = "Top Objects in the Finalizer queue (ready for finalization)";
 			text = "There are no objects in the finalizer queue";
@@ -1112,7 +1113,7 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 		}
 		Globals.g_haveObjectsReadyForFinalization = true;
 		Globals.Manager.CurrentSection = val;
-		var list = (from obj in source.Select((Func<ulong, ClrObject>)((ulong addr) => new ClrObject(Globals.g_Debugger.ClrHeap, ExtensionMethods.GetObjectTypeSafe(Globals.g_Debugger.ClrHeap, addr), addr)))
+		var list = (from obj in source.Select((Func<ulong, ClrObject>)((ulong addr) => new ClrObject(Globals.g_Debugger.ClrHeap, Globals.g_Debugger.ClrHeap.GetObjectTypeSafe(addr), addr)))
 			let type = obj.GetHeapType()
 			where type != null
 			group obj by type into g
@@ -1389,7 +1390,7 @@ public class DotNetMemoryAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysis
 	{
 		try
 		{
-			int num = (from x in Globals.g_Debugger.ClrRuntime.EnumerateModules()
+			int num = (from x in Globals.g_Debugger.ClrRuntime.Modules
 				where x.IsDynamic
 				select x).Count();
 			if (num > 0)

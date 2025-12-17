@@ -203,7 +203,7 @@ public class AnalyzeThreads
 		object obj2 = default(object);
 		object obj3 = default(object);
 		object obj4 = default(object);
-		val.GetFileVersion(ref obj, ref obj2, ref obj3, ref obj4);
+		val.GetFileVersion(out obj, out obj2, out obj3, out obj4);
 		int num = (int)obj;
 		int num2 = (int)obj2;
 		_ = (int)obj3;

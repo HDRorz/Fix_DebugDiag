@@ -112,4 +112,14 @@ public interface INTHeap : IEnumerable
 		[return: MarshalAs(UnmanagedType.BStr)]
 		get;
 	}
+
+    [DispId(13)]
+    string HeapType
+    {
+        [MethodImpl(MethodImplOptions.InternalCall, MethodCodeType = MethodCodeType.Runtime)]
+        [DispId(13)]
+        [return: MarshalAs(UnmanagedType.BStr)]
+        get;
+    }
+
 }

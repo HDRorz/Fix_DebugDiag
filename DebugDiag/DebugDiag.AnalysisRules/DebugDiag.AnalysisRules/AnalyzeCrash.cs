@@ -755,7 +755,22 @@ internal class AnalyzeCrash
 			text6 = "An exception thrown by a heap memory manager function indicates <b>heap corruption</b>. Please click the 'PageHeap Flags...' button in the DebugDiag crash rule configuration dialog to enable PageHeap for the target process  and collect another dump.  For more information, review the following documents: <br><a target='_blank' href='https://msdn.microsoft.com/en-us/library/ff420662.aspx#code-snippet-4'>How to Use the Debug Diagnostic Tool v1.1 (DebugDiag) to Debug User Mode Processes</a><br><a target='_blank' href='http://blogs.msdn.com/b/lagdas/archive/2008/06/24/debugging-heap-corruption-with-application-verifier-and-debugdiag.aspx'>Debugging Heap corruption with Application Verifier and Debugdiag</a><br>";
 			if (Globals.g_Debugger.DumpType != "MINIDUMP")
 			{
-				num = ((IUtils)Globals.g_UtilExt).get_SuspectHeapIndex((uint)ExceptionThread.ThreadID);
+				try
+				{
+					num = ((IUtils)Globals.g_UtilExt).SuspectHeapIndex;
+				}
+				catch (System.Runtime.InteropServices.SEHException)
+				{
+					num = 0; // COM interface access failed
+				}
+				catch (System.Runtime.InteropServices.COMException)
+				{
+					num = 0; // COM interface access failed
+				}
+				catch (System.Exception)
+				{
+					num = 0; // Any other exception
+				}
 				iNTHeap = ((!(Globals.g_Debugger.DumpType != "MINIDUMP") || num == 0) ? null : Globals.g_HeapInfo[num - 1]);
 			}
 			if (iNTHeap != null)
@@ -879,7 +894,22 @@ internal class AnalyzeCrash
 		if (Globals.HeapFunctions.IsHeapFunction(ExceptionThread.StackFrames[0].ReturnAddress) && Globals.g_GlobalFlagsValue == 0)
 		{
 			text2 = "A breakpoint exception thrown by a heap memory manager function indicates <b>heap corruption</b>. Please click the 'PageHeap Flags...' button in the DebugDiag crash rule configuration dialog to enable PageHeap for the target process  and collect another dump.  For more information, review the following documents: <br><a target='_blank' href='https://msdn.microsoft.com/en-us/library/ff420662.aspx#code-snippet-4'>How to Use the Debug Diagnostic Tool v1.1 (DebugDiag) to Debug User Mode Processes</a><br><a target='_blank' href='http://blogs.msdn.com/b/lagdas/archive/2008/06/24/debugging-heap-corruption-with-application-verifier-and-debugdiag.aspx'>Debugging Heap corruption with Application Verifier and Debugdiag</a><br>";
-			num = ((IUtils)Globals.g_UtilExt).get_SuspectHeapIndex((uint)ExceptionThread.ThreadID);
+			try
+			{
+				num = ((IUtils)Globals.g_UtilExt).SuspectHeapIndex;
+			}
+			catch (System.Runtime.InteropServices.SEHException)
+			{
+				num = 0; // COM interface access failed
+			}
+			catch (System.Runtime.InteropServices.COMException)
+			{
+				num = 0; // COM interface access failed
+			}
+			catch (System.Exception)
+			{
+				num = 0; // Any other exception
+			}
 			INTHeap iNTHeap = ((!(Globals.g_Debugger.DumpType != "MINIDUMP") || num == 0) ? null : Globals.g_HeapInfo[num - 1]);
 			if (iNTHeap != null)
 			{

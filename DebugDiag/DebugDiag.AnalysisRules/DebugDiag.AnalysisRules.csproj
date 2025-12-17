@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <AssemblyName>DebugDiag.AnalysisRules</AssemblyName>
     <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
@@ -16,10 +16,14 @@
     <EmbeddedResource Include="DebugDiag.AnalysisRules.CheckItemToHTML.xslt" LogicalName="DebugDiag.AnalysisRules.CheckItemToHTML.xslt" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClrMemDiagExt\ClrMemDiagExt.csproj" />
+    <ProjectReference Include="..\DebugDiag.DotNet\DebugDiag.DotNet.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.Diagnostics.Runtime">
+      <HintPath>..\DebugDiag.DotNet\Microsoft.Diagnostics.Runtime.dll</HintPath>
+    </Reference>
     <Reference Include="System.Configuration" />
-    <Reference Include="DebugDiag.DotNet" />
-    <Reference Include="Microsoft.Diagnostics.Runtime" />
-    <Reference Include="ClrMemDiagExt" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.VisualBasic" />

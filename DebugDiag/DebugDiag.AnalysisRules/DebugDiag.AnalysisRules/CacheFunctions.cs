@@ -302,7 +302,25 @@ public static class CacheFunctions
 			{
 				if (!m_bHasValidTeb.HasValue)
 				{
-					m_bHasValidTeb = ((IUtils)Globals.g_UtilExt).get_IsTEBValid((uint)SystemID);
+					try
+					{
+						m_bHasValidTeb = ((IUtils)Globals.g_UtilExt).IsTEBValid;
+					}
+					catch (System.Runtime.InteropServices.SEHException)
+					{
+						// COM interface access failed, assume TEB is invalid
+						m_bHasValidTeb = false;
+					}
+					catch (System.Runtime.InteropServices.COMException)
+					{
+						// COM interface access failed, assume TEB is invalid
+						m_bHasValidTeb = false;
+					}
+					catch (System.Exception)
+					{
+						// Any other exception, assume TEB is invalid
+						m_bHasValidTeb = false;
+					}
 				}
 				return m_bHasValidTeb.Value;
 			}
@@ -447,7 +465,7 @@ public static class CacheFunctions
 				object obj3 = default(object);
 				object obj4 = default(object);
 				object obj5 = default(object);
-				m_dbgThread.GetUserTime(ref obj, ref obj2, ref obj3, ref obj4, ref obj5);
+				m_dbgThread.GetUserTime(out obj, out obj2, out obj3, out obj4, out obj5);
 				Days = (int)obj;
 				Hours = (int)obj2;
 				Minutes = (int)obj3;
@@ -474,7 +492,7 @@ public static class CacheFunctions
 				object obj3 = default(object);
 				object obj4 = default(object);
 				object obj5 = default(object);
-				m_dbgThread.GetKernelTime(ref obj, ref obj2, ref obj3, ref obj4, ref obj5);
+				m_dbgThread.GetKernelTime(out obj, out obj2, out obj3, out obj4, out obj5);
 				Days = (int)obj;
 				Hours = (int)obj2;
 				Minutes = (int)obj3;
@@ -1848,7 +1866,7 @@ public static class CacheFunctions
 			object obj4 = null;
 			if (m_FileVersionMajor == -1)
 			{
-				m_dbgModule.GetFileVersion(ref obj, ref obj2, ref obj3, ref obj4);
+				m_dbgModule.GetFileVersion(out obj, out obj2, out obj3, out obj4);
 				m_FileVersionMajor = (int)obj;
 				m_FileVersionMinor = (int)obj2;
 				m_FileVersionBuild = (int)obj3;
@@ -1868,7 +1886,7 @@ public static class CacheFunctions
 			object obj4 = null;
 			if (m_ProductVersionMajor == -1)
 			{
-				m_dbgModule.GetProductVersion(ref obj, ref obj2, ref obj3, ref obj4);
+				m_dbgModule.GetProductVersion(out obj, out obj2, out obj3, out obj4);
 			}
 			m_ProductVersionMajor = (int)obj;
 			m_ProductVersionMinor = (int)obj2;
@@ -2169,7 +2187,7 @@ public static class CacheFunctions
 		scriptModuleClass = Globals.g_ModuleCache.ItemByAddress(addr);
 		if (scriptModuleClass == null)
 		{
-			Globals.g_Debugger.GetModuleByAddress(addr, ref sModuleName);
+			Globals.g_Debugger.GetModuleByAddress(addr, out sModuleName);
 			scriptModuleClass = Globals.g_ModuleCache.GetModuleByName(sModuleName);
 		}
 		return scriptModuleClass;

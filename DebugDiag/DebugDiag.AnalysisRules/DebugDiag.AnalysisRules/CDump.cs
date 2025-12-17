@@ -4,6 +4,7 @@ using System.Runtime.InteropServices;
 using DebugDiag.DbgEng;
 using DebugDiag.DbgLib;
 using DebugDiag.DotNet;
+using IASPInfo = IISInfoLib.IASPInfo;
 using IISInfoLib;
 
 namespace DebugDiag.AnalysisRules;
@@ -328,7 +329,7 @@ public class CDump
 	private bool ReadImageNtHeaders(ulong address, out IMAGE_NT_HEADERS64 headers)
 	{
 		//IL_000b: Unknown result type (might be due to invalid IL or missing references)
-		return ((IDebugDataSpaces4)Debugger.RawDebugger).ReadImageNtHeaders(address, ref headers) == 0;
+		return ((IDebugDataSpaces4)Debugger.RawDebugger).ReadImageNtHeaders(address, out headers) == 0;
 	}
 
 	private uint OSPageSize()
@@ -336,7 +337,7 @@ public class CDump
 		//IL_000b: Unknown result type (might be due to invalid IL or missing references)
 		IDebugControl val = (IDebugControl)Debugger.RawDebugger;
 		uint result = 0u;
-		val.GetPageSize(ref result);
+		val.GetPageSize(out result);
 		return result;
 	}
 

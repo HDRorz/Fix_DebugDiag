@@ -4,6 +4,9 @@ using ComplusDDExt;
 using CrashHangExtLib;
 using DebugDiag.DbgLib;
 using DebugDiag.DotNet;
+using IHeapInfo = MemoryExtLib.IHeapInfo;
+using IHTTPInfo = IISInfoLib.IHTTPInfo;
+using IASPInfo = IISInfoLib.IASPInfo;
 using IISInfoLib;
 using MemoryExtLib;
 

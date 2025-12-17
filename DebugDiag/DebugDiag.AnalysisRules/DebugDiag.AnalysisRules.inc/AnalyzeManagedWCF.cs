@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using DebugDiag.DotNet;
 using Microsoft.Diagnostics.Runtime;
+using ClrObject = Microsoft.Diagnostics.RuntimeExt.ClrObject;
 using Microsoft.Diagnostics.RuntimeExt;
 
 namespace DebugDiag.AnalysisRules.inc;

@@ -824,13 +824,13 @@ internal class LeakFunctions
 		Globals.g_bStackCollected = Globals.g_bStackCollected || num > 1;
 		for (num2 = 0; num2 < Convert.ToInt32(num); num2++)
 		{
-			array = LeakFunctions.GetSynStack((dynamic)LTFunction.get_CallStack(num2));
+			array = LeakFunctions.GetSynStack((dynamic)LTFunction.CallStack);
 			Globals.Manager.Write("\t\t\t<p><b>Call stack sample ");
 			Globals.Manager.Write((num2 + 1).ToString());
 			Globals.Manager.Write("</b></p>\r\n");
 			if (LTFunction.AllocationType > 4)
 			{
-				iLTHandleAllocation = LTFunction.get_HandleAllocation(num2);
+				iLTHandleAllocation = LTFunction.HandleAllocation;
 				Globals.Manager.Write("\t\t\t<table border=0 cellpadding=0 cellspacing=0 class='myCustomText'>\r\n");
 				Globals.Manager.Write("\t\t\t\t<tr>\r\n");
 				Globals.Manager.Write("\t\t\t\t\t<td>Handle</td>\r\n");
@@ -848,7 +848,7 @@ internal class LeakFunctions
 			}
 			else
 			{
-				memoryAllocation = LTFunction.get_MemoryAllocation(num2);
+				memoryAllocation = LTFunction.MemoryAllocation;
 				Globals.Manager.Write("\t\t\t<table border=0 cellpadding=0 cellspacing=0 class='myCustomText' ID=\"Table3\">\r\n");
 				Globals.Manager.Write("\t\t\t\t<tr>\r\n");
 				Globals.Manager.Write("\t\t\t\t\t<td>Address</td>\r\n");
@@ -1107,7 +1107,7 @@ internal class LeakFunctions
 			text5 = ";";
 			for (num3 = 0; num3 <= Convert.ToInt32(iLTFunction.CallStackCount) - 1; num3++)
 			{
-				val2 = iLTFunction.get_CallStack(num3);
+				val2 = iLTFunction.CallStack;
 				for (num4 = 0; num4 <= Globals.HelperFunctions.UBound_HACK_DO_NOT_USE((Array)val2, 1); num4++)
 				{
 					text4 = Convert.ToString(val2[num4, 0]).Replace("<", "&lt");

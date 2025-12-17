@@ -58,12 +58,15 @@ public class HeapFunctionsImpl : IHeapFunctions
 		for (int i = 0; i < array.Length; i++)
 		{
 			INTHeap2 iNTHeap = (INTHeap2)array[i];
-			string heapType = iNTHeap.HeapType;
-			if (!string.IsNullOrEmpty(heapType) && heapType.Equals("NT", StringComparison.CurrentCultureIgnoreCase))
+            if (iNTHeap != null)
 			{
-				list.Add(iNTHeap);
+				string heapType = iNTHeap.HeapType;
+				if (!string.IsNullOrEmpty(heapType) && heapType.Equals("NT", StringComparison.CurrentCultureIgnoreCase))
+				{
+					list.Add(iNTHeap);
+				}
+				Globals.g_HeapArray[i] = (INTHeap)iNTHeap;
 			}
-			Globals.g_HeapArray[i] = (INTHeap)iNTHeap;
 		}
 		Globals.g_NTHeapArray = list.ToArray();
 		for (I = 0; I <= Globals.g_HeapInfo.Count - 1; I++)
@@ -123,10 +126,13 @@ public class HeapFunctionsImpl : IHeapFunctions
 		{
 			Globals.g_HeapArray[j] = (INTHeap)array[j];
 			INTHeap2 iNTHeap2 = (INTHeap2)array[j];
-			string heapType2 = iNTHeap2.HeapType;
-			if (!string.IsNullOrEmpty(heapType2) && heapType2.Equals("NT", StringComparison.CurrentCultureIgnoreCase))
+			if (iNTHeap2 != null)
 			{
-				list.Add(iNTHeap2);
+				string heapType2 = iNTHeap2.HeapType;
+				if (!string.IsNullOrEmpty(heapType2) && heapType2.Equals("NT", StringComparison.CurrentCultureIgnoreCase))
+				{
+					list.Add(iNTHeap2);
+				}
 			}
 		}
 		Globals.g_NTHeapArray = list.ToArray();
@@ -197,7 +203,8 @@ public class HeapFunctionsImpl : IHeapFunctions
 		string name = Heap.Name;
 		Globals.Manager.Write("<h4>");
 		Globals.Manager.Write("<a name='#" + Globals.g_UniqueReference + Heap.Handle + "'>");
-		string heapType = ((INTHeap2)Heap).HeapType;
+		INTHeap2 heap2 = Heap as INTHeap2;
+		string heapType = heap2?.HeapType ?? "Unknown";
 		Globals.Manager.Write("Heap " + Heap.Index + " - " + Globals.g_Debugger.GetAs32BitHexString(Heap.Handle) + " | " + heapType + " Heap");
 		Globals.Manager.Write("</a>");
 		Globals.Manager.Write("</h4>");

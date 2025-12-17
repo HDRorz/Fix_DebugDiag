@@ -52,7 +52,25 @@ public class CrashHangAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysisRul
 					Globals.g_ExtendedThreadInfoAvailable = Globals.g_Debugger.ExtendedThreadInfoAvailable;
 					int count = Globals.Manager.GetResults(0).Count;
 					CacheFunctions.ResetCache();
-					if (!Globals.g_UtilExt.IsPEBValid)
+					bool isPEBValid = false;
+					try
+					{
+						isPEBValid = Globals.g_UtilExt.IsPEBValid;
+					}
+					catch (System.Runtime.InteropServices.SEHException)
+					{
+						isPEBValid = false; // COM interface access failed
+					}
+					catch (System.Runtime.InteropServices.COMException)
+					{
+						isPEBValid = false; // COM interface access failed
+					}
+					catch (System.Exception)
+					{
+						isPEBValid = false; // Any other exception
+					}
+
+					if (!isPEBValid)
 					{
 						if (Globals.g_Debugger.DumpType != "MINIDUMP")
 						{
@@ -62,7 +80,22 @@ public class CrashHangAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysisRul
 					}
 					else
 					{
-						Globals.g_GlobalFlagsValue = (int)Globals.HelperFunctions.FromHex(Globals.g_UtilExt.NTGlobalFlags);
+						try
+						{
+							Globals.g_GlobalFlagsValue = (int)Globals.HelperFunctions.FromHex(Globals.g_UtilExt.NTGlobalFlags);
+						}
+						catch (System.Runtime.InteropServices.SEHException)
+						{
+							Globals.g_GlobalFlagsValue = 0; // COM interface access failed
+						}
+						catch (System.Runtime.InteropServices.COMException)
+						{
+							Globals.g_GlobalFlagsValue = 0; // COM interface access failed
+						}
+						catch (System.Exception)
+						{
+							Globals.g_GlobalFlagsValue = 0; // Any other exception
+						}
 					}
 					Globals.g_collCritSecs.Clear();
 					Globals.g_collThreadsBlockedByCritsecs.Clear();
@@ -308,13 +341,46 @@ public class CrashHangAnalysis : IMultiDumpRule, IAnalysisRuleBase, IAnalysisRul
 		Globals.g_ExtendedThreadInfoAvailable = Globals.g_Debugger.ExtendedThreadInfoAvailable;
 		Globals.g_UniqueReference = Globals.HelperFunctions.GetUniqueReference(Globals.g_Debugger);
 		CacheFunctions.ResetCache();
-		if (!Globals.g_UtilExt.IsPEBValid)
+		bool isPEBValid = false;
+		try
+		{
+			isPEBValid = Globals.g_UtilExt.IsPEBValid;
+		}
+		catch (System.Runtime.InteropServices.SEHException)
+		{
+			isPEBValid = false; // COM interface access failed
+		}
+		catch (System.Runtime.InteropServices.COMException)
+		{
+			isPEBValid = false; // COM interface access failed
+		}
+		catch (System.Exception)
+		{
+			isPEBValid = false; // Any other exception
+		}
+
+		if (!isPEBValid)
 		{
 			Globals.g_GlobalFlagsValue = 0;
 		}
 		else
 		{
-			Globals.g_GlobalFlagsValue = (int)Globals.HelperFunctions.FromHex(Globals.g_UtilExt.NTGlobalFlags);
+			try
+			{
+				Globals.g_GlobalFlagsValue = (int)Globals.HelperFunctions.FromHex(Globals.g_UtilExt.NTGlobalFlags);
+			}
+			catch (System.Runtime.InteropServices.SEHException)
+			{
+				Globals.g_GlobalFlagsValue = 0; // COM interface access failed
+			}
+			catch (System.Runtime.InteropServices.COMException)
+			{
+				Globals.g_GlobalFlagsValue = 0; // COM interface access failed
+			}
+			catch (System.Exception)
+			{
+				Globals.g_GlobalFlagsValue = 0; // Any other exception
+			}
 		}
 		Globals.g_collCritSecs.Clear();
 		Globals.g_collThreadsBlockedByCritsecs.Clear();

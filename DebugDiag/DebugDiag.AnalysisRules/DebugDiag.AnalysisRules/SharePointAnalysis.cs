@@ -140,11 +140,11 @@ public class SharePointAnalysis : IAnalysisRuleMetadata, IMultiDumpRule, IAnalys
 		for (int i = 0; i < array.Length - 1; i++)
 		{
 			fieldByName = val.GetFieldByName(array[i]);
-			if (!((ClrField)fieldByName).IsObjectReference())
+			if (!((ClrField)fieldByName).IsObjectReference)
 			{
 				return null;
 			}
-			num = (ulong)fieldByName.GetFieldValue(num);
+			num = (ulong)fieldByName.GetValue(num);
 			if (num == 0L)
 			{
 				return null;
@@ -152,7 +152,7 @@ public class SharePointAnalysis : IAnalysisRuleMetadata, IMultiDumpRule, IAnalys
 			val = heap.GetObjectType(num);
 		}
 		fieldByName = val.GetFieldByName(array[array.Length - 1]);
-		return fieldByName.GetFieldValue(num);
+		return fieldByName.GetValue(num);
 	}
 
 	private static string GetFieldValueString(ulong Address, ClrType TheType, string FieldName)
@@ -176,9 +176,9 @@ public class SharePointAnalysis : IAnalysisRuleMetadata, IMultiDumpRule, IAnalys
 		//IL_0073: Expected I4, but got Unknown
 		if (!((ClrField)field).HasSimpleValue)
 		{
-			return field.GetFieldAddress(obj).ToString("X");
+			return field.GetAddress(obj).ToString("X");
 		}
-		object fieldValue = field.GetFieldValue(obj);
+		object fieldValue = field.GetValue(obj);
 		if (fieldValue == null)
 		{
 			return "{error}";
@@ -186,15 +186,15 @@ public class SharePointAnalysis : IAnalysisRuleMetadata, IMultiDumpRule, IAnalys
 		ClrElementType elementType = ((ClrField)field).ElementType;
 		if ((int)elementType != 14)
 		{
-			switch (elementType - 18)
+			switch ((ClrElementType)((int)elementType - 18))
 			{
-			case 0:
-			case 2:
-			case 6:
-			case 7:
-			case 9:
-			case 10:
-			case 11:
+			case ClrElementType.Unknown:
+			case ClrElementType.Boolean:
+			case ClrElementType.Int16:
+			case ClrElementType.UInt16:
+			case ClrElementType.UInt32:
+			case ClrElementType.Int64:
+			case ClrElementType.UInt64:
 				return $"{fieldValue:X}";
 			default:
 				return fieldValue.ToString();
@@ -329,7 +329,7 @@ public class SharePointAnalysis : IAnalysisRuleMetadata, IMultiDumpRule, IAnalys
 						Manager.ReportError($"SharePoint version {text4} was found, but the DAC Library to analyze the following dump file could not be loaded:<br />{text3}.", "SharePoint analysis will be <b>forcibly</b> skipped.<br />Locate the correct DAC file and try again.", 10, "{AAF5A24D-9A61-45C3-B464-0063693A3589}");
 						continue;
 					}
-					ClrHeap heap = g_Debugger.ClrRuntime.GetHeap();
+					ClrHeap heap = g_Debugger.ClrRuntime.Heap;
 					HeapCache heapCache = new HeapCache(g_Debugger.ClrRuntime);
 					string text5 = "List of custom SharePoint types";
 					Globals.HelperFunctions.ResetStatusNoIncrement(text5);

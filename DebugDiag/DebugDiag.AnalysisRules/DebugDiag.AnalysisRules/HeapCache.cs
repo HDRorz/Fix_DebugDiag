@@ -26,7 +26,7 @@ public class HeapCache
 			IsValidHeap = true;
 			return;
 		}
-		heap = runtime.GetHeap();
+		heap = runtime.Heap;
 		if (!heap.CanWalkHeap)
 		{
 			IsValidHeap = true;
@@ -44,7 +44,7 @@ public class HeapCache
 			return;
 		}
 		cache = new Dictionary<string, CacheInfo>();
-		foreach (ulong item in heap.EnumerateObjects())
+		foreach (ulong item in heap.EnumerateObjectAddresses())
 		{
 			string name = heap.GetObjectType(item).Name;
 			if (!cache.TryGetValue(name, out var value))
@@ -230,11 +230,11 @@ public class HeapCache
 		for (int i = 0; i < array.Length - 1; i++)
 		{
 			fieldByName = val.GetFieldByName(array[i]);
-			if (!((ClrField)fieldByName).IsObjectReference())
+			if (!((ClrField)fieldByName).IsObjectReference)
 			{
 				return null;
 			}
-			num = (ulong)fieldByName.GetFieldValue(num);
+			num = (ulong)fieldByName.GetValue(num);
 			if (num == 0L)
 			{
 				return null;
@@ -243,7 +243,7 @@ public class HeapCache
 		}
 		fieldByName = val.GetFieldByName(array[array.Length - 1]);
 		object obj = null;
-		obj = fieldByName.GetFieldValue(num);
+		obj = fieldByName.GetValue(num);
 		if (((ClrField)fieldByName).Type.IsEnum)
 		{
 			obj = ((ClrField)fieldByName).Type.GetEnumName(obj);
