@@ -38,6 +38,9 @@ heapType.Heap.Runtime.ReadPointer(value, out value);
 - `DebugDiag.DotNet/ClrHelper.cs` (1 instance)
 - `ClrMemDiagExt/ClrObject.cs` (2 instances)
 - `ClrMemDiagExt/StaticVariableValueWrapper.cs` (1 instance)
+- `DebugDiag.AnalysisRules/HeapCache.cs` (1 instance)
+- `DebugDiag.AnalysisRules/DotNetMemoryAnalysis.cs` (1 instance)
+- `DebugDiag.AnalysisRules/SharePointAnalysis.cs` (1 instance)
 
 ### 2. ArrayComponentType → ComponentType
 
@@ -56,6 +59,7 @@ ClrType keyType = ((ClrType)val).ComponentType.GetFieldByName("key").Type;
 **Files Updated:**
 - `ClrMemDiagExt/ClrObject.cs` (4 instances)
 - `ClrMemDiagExt/MDType.cs` (2 instances)
+- `DebugDiag.AnalysisRules/DotNetMemoryAnalysis.cs` (4 instances)
 
 ### 3. EnumerateObjects() → EnumerateObjectAddresses()
 
@@ -79,6 +83,7 @@ foreach (ulong item in ClrHeap.EnumerateObjectAddresses())
 
 **Files Updated:**
 - `DebugDiag.DotNet/NetDbgObj.cs` (1 instance)
+- `DebugDiag.AnalysisRules/HeapCache.cs` (1 instance)
 
 ### 4. EnumerateFinalizerQueue() → EnumerateFinalizerQueueObjectAddresses()
 
@@ -134,11 +139,51 @@ A compatibility extension method has been added to provide backward compatibilit
 // ClrMDCompatibility.cs provides:
 public static ClrThreadPool GetThreadPool(this ClrRuntime runtime)
 {
+    // The base ClrRuntime.ThreadPool throws NotImplementedException
+    // We need to use reflection to access the ThreadPool property from concrete implementations
+    try
+    {
+        // Try to get the ThreadPool property using reflection
+        var threadPoolProperty = runtime.GetType().GetProperty("ThreadPool", BindingFlags.Public | BindingFlags.Instance);
+        if (threadPoolProperty != null && threadPoolProperty.CanRead)
+        {
+            var threadPool = threadPoolProperty.GetValue(runtime) as ClrThreadPool;
+            if (threadPool != null)
+            {
+                return threadPool;
+            }
+        }
+    }
+    catch
+    {
+        // If reflection fails, fall back to the base implementation
+    }
+    
+    // Fallback to the base implementation (will throw NotImplementedException)
     return runtime.ThreadPool;
 }
 ```
 
-### 6. Additional API Changes in ClrMD 1.1.2
+**Note:** The base `ClrRuntime.ThreadPool` property throws `NotImplementedException`, so the compatibility method uses reflection to access the actual implementation from concrete runtime types (since `DesktopRuntimeBase` is internal).
+
+### 6. GetHeap() → Heap Property
+
+**Before:**
+```csharp
+ClrHeap heap = runtime.GetHeap();
+```
+
+**After:**
+```csharp
+ClrHeap heap = runtime.Heap;
+```
+
+**Files Updated:**
+- `DebugDiag.AnalysisRules/SharePointAnalysis.cs` (1 instance)
+- `DebugDiag.AnalysisRules/HeapCache.cs` (1 instance)
+- `DebugDiag.AnalysisRules/DotNetMemoryAnalysis.cs` (1 instance)
+
+### 7. Additional API Changes in ClrMD 1.1.2
 
 **Method to Property Changes:**
 ```csharp
@@ -148,6 +193,12 @@ field.IsPrimitive()        →  field.IsPrimitive
 field.IsValueClass()       →  field.IsValueType
 runtime.GetHeap()          →  runtime.Heap
 ```
+
+**Files Updated:**
+- `DebugDiag.AnalysisRules/AnalyzeManagedImpl.cs` (1 instance of IsValueType)
+- `DebugDiag.AnalysisRules/DotNetMemoryAnalysis.cs` (6 instances: IsValueType, IsObjectReference)
+- `DebugDiag.AnalysisRules/SharePointAnalysis.cs` (1 instance of IsObjectReference)
+- `DebugDiag.AnalysisRules/HeapCache.cs` (1 instance of IsObjectReference)
 
 **API Method Changes:**
 ```csharp
