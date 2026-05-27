@@ -9,4 +9,4 @@
 /DebugDiag.DotNet.dll<br>
 /Microsoft.Diagnostics.Runtime.dll<br>
 
-
+MemoryAnalysis功能还是坏的，待继续修复
